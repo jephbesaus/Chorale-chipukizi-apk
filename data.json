@@ -1,0 +1,112 @@
+{
+  "user": {
+    "name": "Chipukizi",
+    "email": "exemple@email.com",
+    "phone": "243XXXXXXXXX",
+    "credits": 5,
+    "maxCredits": 5,
+    "subscription": { "type": "free", "expires": null },
+    "projects": [],
+    "exports": []
+  },
+  "songs": [
+    {
+      "id": 1,
+      "title": "Nisi Rudi Nyuma",
+      "artist": "Chorale Chipukizi",
+      "duration": "",
+      "type": "audio",
+      "file": "assets/audio/nisi-rudi-nyuma.mp3",
+      "lyrics": [],
+      "image": "assets/images/logo-chipukizi.png",
+      "plays": 0,
+      "new": true,
+      "hero": true,
+      "heroSubtitle": "Écoutez cette chanson pour vous fortifier."
+    },
+    {
+      "id": 2,
+      "title": "Baba Yetu",
+      "artist": "Chorale Chipukizi",
+      "duration": "",
+      "type": "audio",
+      "file": "assets/audio/baba-yetu.mp3",
+      "lyrics": [],
+      "image": "assets/images/logo-chipukizi.png",
+      "plays": 0,
+      "new": true
+    },
+    {
+      "id": 3,
+      "title": "Fungua Mbingu",
+      "artist": "Chorale Chipukizi",
+      "duration": "",
+      "type": "audio",
+      "file": "assets/audio/fungua-mbingu.mp3",
+      "lyrics": [],
+      "image": "assets/images/logo-chipukizi.png",
+      "plays": 0,
+      "new": true
+    },
+    {
+      "id": 4,
+      "title": "Garama",
+      "artist": "Chorale Chipukizi",
+      "duration": "",
+      "type": "audio",
+      "file": "assets/audio/garama.mp3",
+      "lyrics": [],
+      "image": "assets/images/logo-chipukizi.png",
+      "plays": 0,
+      "new": false
+    },
+    {
+      "id": 5,
+      "title": "Uni Jaze",
+      "artist": "Chorale Chipukizi",
+      "duration": "",
+      "type": "audio",
+      "file": "assets/audio/uni-jaze.mp3",
+      "lyrics": [],
+      "image": "assets/images/logo-chipukizi.png",
+      "plays": 0,
+      "new": false
+    },
+    {
+      "id": 6,
+      "title": "Jerusalemu",
+      "artist": "Chorale Chipukizi",
+      "duration": "",
+      "type": "audio",
+      "file": "assets/audio/jerusalemu.mp3",
+      "lyrics": [],
+      "image": "assets/images/logo-chipukizi.png",
+      "plays": 0,
+      "new": false
+    },
+    {
+      "id": 7,
+      "title": "Mungu Ni Chef",
+      "artist": "Chorale Chipukizi",
+      "duration": "",
+      "type": "audio",
+      "file": "assets/audio/mungu-ni-chef.mp3",
+      "lyrics": [],
+      "image": "assets/images/logo-chipukizi.png",
+      "plays": 0,
+      "new": false
+    }
+  ],
+  "translations": {
+    "fr": {
+      "welcome": "Bonjour,",
+      "title": "Chorale Chipukizi",
+      "subtitle": "8ième CEPAC MAKIMBILIO",
+      "nav_home": "Accueil",
+      "nav_albums": "Albums",
+      "nav_studio": "Studio",
+      "nav_videos": "Vidéos",
+      "nav_settings": "Réglages"
+    }
+  }
+}

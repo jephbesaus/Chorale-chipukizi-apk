@@ -1,0 +1,14 @@
+{
+  "name": "Chorale Chipukizi",
+  "short_name": "Chipukizi",
+  "description": "Application de la chorale Chipukizi — écoute, création vidéo lyric et studio d'enregistrement.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#f7971e",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "assets/images/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/images/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
