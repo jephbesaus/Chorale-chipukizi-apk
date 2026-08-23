@@ -18,11 +18,12 @@
       "type": "audio",
       "file": "assets/audio/nisi-rudi-nyuma.mp3",
       "lyrics": [],
-      "image": "assets/images/logo-chipukizi.png",
+      "image": "assets/images/choristers-4.jpg",
       "plays": 0,
       "new": true,
       "hero": true,
-      "heroSubtitle": "Écoutez cette chanson pour vous fortifier."
+      "heroImage": "assets/images/hero-woman.jpg",
+      "heroCaption": "One voice, one heart, one purpose."
     },
     {
       "id": 2,
@@ -32,7 +33,7 @@
       "type": "audio",
       "file": "assets/audio/baba-yetu.mp3",
       "lyrics": [],
-      "image": "assets/images/logo-chipukizi.png",
+      "image": "assets/images/choristers-1.jpg",
       "plays": 0,
       "new": true
     },
@@ -44,7 +45,7 @@
       "type": "audio",
       "file": "assets/audio/fungua-mbingu.mp3",
       "lyrics": [],
-      "image": "assets/images/logo-chipukizi.png",
+      "image": "assets/images/choristers-3.jpg",
       "plays": 0,
       "new": true
     },
@@ -56,7 +57,7 @@
       "type": "audio",
       "file": "assets/audio/garama.mp3",
       "lyrics": [],
-      "image": "assets/images/logo-chipukizi.png",
+      "image": "assets/images/choristers-2.jpg",
       "plays": 0,
       "new": false
     },
@@ -68,7 +69,7 @@
       "type": "audio",
       "file": "assets/audio/uni-jaze.mp3",
       "lyrics": [],
-      "image": "assets/images/logo-chipukizi.png",
+      "image": "assets/images/choristers-5.jpg",
       "plays": 0,
       "new": false
     },
@@ -80,7 +81,7 @@
       "type": "audio",
       "file": "assets/audio/jerusalemu.mp3",
       "lyrics": [],
-      "image": "assets/images/logo-chipukizi.png",
+      "image": "assets/images/choristers-6.jpg",
       "plays": 0,
       "new": false
     },
@@ -92,21 +93,15 @@
       "type": "audio",
       "file": "assets/audio/mungu-ni-chef.mp3",
       "lyrics": [],
-      "image": "assets/images/logo-chipukizi.png",
+      "image": "assets/images/choristers-4.jpg",
       "plays": 0,
       "new": false
     }
   ],
   "translations": {
     "fr": {
-      "welcome": "Bonjour,",
       "title": "Chorale Chipukizi",
-      "subtitle": "8ième CEPAC MAKIMBILIO",
-      "nav_home": "Accueil",
-      "nav_albums": "Albums",
-      "nav_studio": "Studio",
-      "nav_videos": "Vidéos",
-      "nav_settings": "Réglages"
+      "subtitle": "8ième CEPAC MAKIMBILIO"
     }
   }
 }

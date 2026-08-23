@@ -35,15 +35,17 @@ let currentSearch = '';
 /* ============ CHARGEMENT DES DONNÉES ============ */
 async function loadData() {
   try {
-    const res = await fetch('data.json');
+    const res = await fetch(`data.json?v=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`data.json a répondu ${res.status}`);
     DATA = await res.json();
   } catch (e) {
-    // Fallback si data.json n'est pas accessible (ex: ouverture en file://)
     DATA = { user: { name: 'Chipukizi', credits: 5, maxCredits: 5 }, songs: [] };
+    showToast('Chansons introuvables — vérifiez que data.json est bien en ligne à côté de index.html');
+    console.error('Erreur de chargement de data.json :', e);
   }
   credits = DATA.user.credits ?? 5;
   document.getElementById('welcomeLine').innerHTML =
-    `👋 Bonjour, <strong>${DATA.user.name}</strong>`;
+    `Bienvenue, <strong>${escapeHtml(DATA.user.name)}</strong>`;
   renderHome();
   renderSongList();
   renderVideoSongSelect();
@@ -70,31 +72,30 @@ document.querySelectorAll('[data-page]').forEach((el) => {
 /* ============ ACCUEIL ============ */
 function renderHome() {
   const carousel = document.getElementById('carousel');
-  const hero = DATA.songs.find((s) => s.hero);
-  const others = DATA.songs.filter((s) => !s.hero);
-  const slides = hero ? [hero, ...others] : DATA.songs;
-  const latest = DATA.songs.filter((s) => s.new);
+  const hero = DATA.songs.find((s) => s.hero) || DATA.songs[0];
 
-  carousel.innerHTML = slides.map((s) => `
-    <div class="carousel-slide" data-id="${s.id}">
-      <img class="slide-logo" src="assets/images/logo-chipukizi.png" alt="">
+  carousel.innerHTML = !hero ? '' : `
+    <div class="carousel-slide" data-id="${hero.id}" style="background-image:url('${hero.heroImage || hero.image}')">
+      <div class="slide-scrim"></div>
       <p class="eyebrow">Chorale Chipukizi</p>
-      <h3>${escapeHtml(s.title)}</h3>
-      <p>${escapeHtml(s.heroSubtitle || 'Écoutez ce chant de la chorale.')}</p>
+      <h3>${escapeHtml(hero.title)}</h3>
+      <p>${escapeHtml(hero.heroCaption || '')}</p>
       <div class="card-controls">
         <button class="icon-btn icon-btn--play" data-action="play" aria-label="Écouter">${ICON_PLAY}</button>
         <button class="icon-btn icon-btn--ghost" data-action="like" aria-label="Aimer">${ICON_HEART}</button>
-        <button class="icon-btn icon-btn--ghost" data-action="share" aria-label="Partager">${ICON_SHARE}</button>
+        <button class="icon-btn icon-btn--ghost" data-action="download" aria-label="Télécharger">${ICON_DOWNLOAD}</button>
       </div>
     </div>
-  `).join('');
-  carousel.querySelectorAll('.carousel-slide').forEach((slide) => {
-    const id = Number(slide.dataset.id);
-    slide.querySelector('[data-action="play"]').addEventListener('click', (e) => { e.stopPropagation(); openPlayer(id); });
-    slide.querySelector('[data-action="like"]').addEventListener('click', (e) => { e.stopPropagation(); toggleLike(id, e.currentTarget); });
-    slide.querySelector('[data-action="share"]').addEventListener('click', (e) => { e.stopPropagation(); shareSong(id); });
-    slide.addEventListener('click', () => openPlayer(id));
-  });
+  `;
+  const heroSlide = carousel.querySelector('.carousel-slide');
+  if (heroSlide) {
+    const id = Number(heroSlide.dataset.id);
+    heroSlide.querySelector('[data-action="play"]').addEventListener('click', (e) => { e.stopPropagation(); openPlayer(id); });
+    heroSlide.querySelector('[data-action="like"]').addEventListener('click', (e) => { e.stopPropagation(); toggleLike(id, e.currentTarget); });
+    heroSlide.querySelector('[data-action="download"]').addEventListener('click', (e) => { e.stopPropagation(); downloadSong(id); });
+    heroSlide.querySelector('[data-action="like"]').classList.toggle('liked', likedSongs.has(id));
+    heroSlide.addEventListener('click', () => openPlayer(id));
+  }
 
   const top5 = [...DATA.songs].sort((a, b) => (b.plays || 0) - (a.plays || 0) || a.id - b.id).slice(0, 5);
   const top5List = document.getElementById('top5List');
@@ -174,12 +175,51 @@ document.getElementById('albumSearch').addEventListener('input', (e) => {
   currentSearch = e.target.value;
   renderSongList();
 });
-document.querySelectorAll('.filter-chip').forEach((chip) => {
+document.querySelectorAll('#albumFilterRow .filter-chip').forEach((chip) => {
   chip.addEventListener('click', () => {
-    document.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
+    document.querySelectorAll('#albumFilterRow .filter-chip').forEach((c) => c.classList.remove('active'));
     chip.classList.add('active');
     currentFilter = chip.dataset.filter;
     renderSongList();
+  });
+});
+
+/* --- Icônes / filtres de la page d'accueil --- */
+document.getElementById('homeSearchBtn').addEventListener('click', () => {
+  navigateTo('albums');
+  document.getElementById('albumSearch').focus();
+});
+document.getElementById('homeLikedBtn').addEventListener('click', () => {
+  if (likedSongs.size === 0) { showToast('Aucune chanson aimée pour le moment'); return; }
+  navigateTo('albums');
+  currentSearch = '';
+  document.getElementById('albumSearch').value = '';
+  const list = document.getElementById('songList');
+  const liked = DATA.songs.filter((s) => likedSongs.has(s.id));
+  list.innerHTML = liked.map((s) => `
+    <div class="song-row" data-id="${s.id}">
+      <img class="song-cover" src="${s.image}" alt="">
+      <div class="song-info">
+        <h4>${escapeHtml(s.title)}</h4>
+        <span>${s.type === 'video' ? ICON_VIDEO_TAG : ICON_AUDIO_TAG} ${escapeHtml(s.artist)}${s.duration ? ' · ' + s.duration : ''}</span>
+      </div>
+      <button class="icon-btn icon-btn--play icon-btn--sm" data-action="play" aria-label="Écouter">${ICON_PLAY}</button>
+    </div>
+  `).join('');
+  list.querySelectorAll('.song-row').forEach((row) => {
+    const id = Number(row.dataset.id);
+    row.addEventListener('click', () => openPlayer(id));
+  });
+});
+document.querySelectorAll('#homeFilterRow .filter-chip').forEach((chip) => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#homeFilterRow .filter-chip').forEach((c) => c.classList.remove('active'));
+    chip.classList.add('active');
+    const targetId = chip.dataset.filter === 'nouveautes' ? 'sectionNouveautes'
+      : chip.dataset.filter === 'top' || chip.dataset.filter === 'tendance' ? 'sectionTop'
+      : null;
+    if (targetId) document.getElementById(targetId).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
 
@@ -219,7 +259,7 @@ function renderLyrics(song, audio) {
   const box = document.getElementById('playerLyrics');
   audio.ontimeupdate = null;
   if (!song.lyrics || song.lyrics.length === 0) {
-    box.innerHTML = '<p class="lyrics-empty">Paroles bientôt disponibles ✍️<br>Envoyez-moi le texte pour activer l\'affichage synchronisé.</p>';
+    box.innerHTML = '<p class="lyrics-empty">Paroles bientôt disponibles.<br>Envoyez-moi le texte pour activer l\'affichage synchronisé.</p>';
     return;
   }
   box.innerHTML = song.lyrics.map((line, i) => `<p class="lyric-line" data-i="${i}">${escapeHtml(line.text)}</p>`).join('');

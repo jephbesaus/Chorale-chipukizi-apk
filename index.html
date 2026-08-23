@@ -32,19 +32,41 @@
 
   <!-- ===== PAGE ACCUEIL ===== -->
   <section class="page active" id="page-accueil">
-    <p class="welcome-line" id="welcomeLine">👋 Bonjour, <strong>Chipukizi</strong></p>
+    <div class="home-topline">
+      <div class="home-user">
+        <span class="avatar-circle" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        </span>
+        <p class="welcome-line" id="welcomeLine">Bienvenue, <strong>Chipukizi</strong></p>
+      </div>
+      <div class="home-actions">
+        <button class="icon-btn icon-btn--ghost" id="homeSearchBtn" aria-label="Rechercher">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <button class="icon-btn icon-btn--ghost" id="homeLikedBtn" aria-label="Chansons aimées">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.2C.5 8.4 2.4 5 6 5c2 0 3.5 1 4 2.3C10.5 6 12 5 14 5c3.6 0 5.5 3.4 4 6.8-2.5 4.6-10 9.2-10 9.2z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="filter-row" id="homeFilterRow">
+      <button class="filter-chip active" data-filter="tous">Tous</button>
+      <button class="filter-chip" data-filter="nouveautes">Nouveautés</button>
+      <button class="filter-chip" data-filter="tendance">Tendance</button>
+      <button class="filter-chip" data-filter="top">Top</button>
+    </div>
 
     <div class="carousel" id="carousel">
       <!-- injecté par JS -->
     </div>
 
-    <div class="section-head">
-      <h2>Top 5 chants</h2>
+    <div class="section-head" id="sectionTop">
+      <h2>Top</h2>
     </div>
     <ol class="top5-list" id="top5List"></ol>
 
-    <div class="section-head">
-      <h2>Dernières sorties</h2>
+    <div class="section-head" id="sectionNouveautes">
+      <h2>Nouveautés</h2>
     </div>
     <div class="release-row" id="releaseRow"></div>
   </section>
@@ -57,7 +79,7 @@
     <div class="search-bar">
       <input type="search" id="albumSearch" placeholder="Rechercher un chant...">
     </div>
-    <div class="filter-row">
+    <div class="filter-row" id="albumFilterRow">
       <button class="filter-chip active" data-filter="tous">Tous</button>
       <button class="filter-chip" data-filter="audio">Audio</button>
       <button class="filter-chip" data-filter="video">Vidéo</button>
