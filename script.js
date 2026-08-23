@@ -1,5 +1,59 @@
 'use strict';
 
+/* ============ DONNÉES DE L'APPLICATION ============
+   Intégrées directement ici (au lieu d'un data.json séparé) pour éliminer
+   tout risque d'oubli de fichier lors d'un déploiement manuel. */
+const EMBEDDED_DATA = {
+  user: {
+    name: 'Chipukizi',
+    email: 'exemple@email.com',
+    phone: '243XXXXXXXXX',
+    credits: 5,
+    maxCredits: 5,
+    subscription: { type: 'free', expires: null },
+    projects: [],
+    exports: []
+  },
+  songs: [
+    {
+      id: 1, title: 'Nisi Rudi Nyuma', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
+      file: 'assets/audio/nisi-rudi-nyuma.mp3', lyrics: [], image: 'assets/images/choristers-4.jpg',
+      plays: 0, new: true, hero: true,
+      heroImage: 'assets/images/hero-woman.jpg', heroCaption: 'One voice, one heart, one purpose.'
+    },
+    {
+      id: 2, title: 'Baba Yetu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
+      file: 'assets/audio/baba-yetu.mp3', lyrics: [], image: 'assets/images/choristers-1.jpg',
+      plays: 0, new: true
+    },
+    {
+      id: 3, title: 'Fungua Mbingu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
+      file: 'assets/audio/fungua-mbingu.mp3', lyrics: [], image: 'assets/images/choristers-3.jpg',
+      plays: 0, new: true
+    },
+    {
+      id: 4, title: 'Garama', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
+      file: 'assets/audio/garama.mp3', lyrics: [], image: 'assets/images/choristers-2.jpg',
+      plays: 0, new: false
+    },
+    {
+      id: 5, title: 'Uni Jaze', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
+      file: 'assets/audio/uni-jaze.mp3', lyrics: [], image: 'assets/images/choristers-5.jpg',
+      plays: 0, new: false
+    },
+    {
+      id: 6, title: 'Jerusalemu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
+      file: 'assets/audio/jerusalemu.mp3', lyrics: [], image: 'assets/images/choristers-6.jpg',
+      plays: 0, new: false
+    },
+    {
+      id: 7, title: 'Mungu Ni Chef', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
+      file: 'assets/audio/mungu-ni-chef.mp3', lyrics: [], image: 'assets/images/choristers-4.jpg',
+      plays: 0, new: false
+    }
+  ]
+};
+
 /* ============ ICÔNES SVG ============ */
 const ICON_PLAY = '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>';
 const ICON_HEART = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.2C.5 8.4 2.4 5 6 5c2 0 3.5 1 4 2.3C10.5 6 12 5 14 5c3.6 0 5.5 3.4 4 6.8-2.5 4.6-10 9.2-10 9.2z"/></svg>';
@@ -34,15 +88,9 @@ let currentSearch = '';
 
 /* ============ CHARGEMENT DES DONNÉES ============ */
 async function loadData() {
-  try {
-    const res = await fetch(`data.json?v=${Date.now()}`, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`data.json a répondu ${res.status}`);
-    DATA = await res.json();
-  } catch (e) {
-    DATA = { user: { name: 'Chipukizi', credits: 5, maxCredits: 5 }, songs: [] };
-    showToast('Chansons introuvables — vérifiez que data.json est bien en ligne à côté de index.html');
-    console.error('Erreur de chargement de data.json :', e);
-  }
+  // Les données sont intégrées dans script.js (voir EMBEDDED_DATA en haut du fichier) :
+  // l'application fonctionne donc même si data.json n'a pas été correctement mis en ligne.
+  DATA = JSON.parse(JSON.stringify(EMBEDDED_DATA));
   credits = DATA.user.credits ?? 5;
   document.getElementById('welcomeLine').innerHTML =
     `Bienvenue, <strong>${escapeHtml(DATA.user.name)}</strong>`;
@@ -242,6 +290,7 @@ function openPlayer(id) {
   document.getElementById('playerArtist').textContent = song.artist;
   const audio = document.getElementById('playerAudio');
   audio.src = song.file;
+  audio.onerror = () => showToast(`Fichier audio introuvable : ${song.file} — vérifiez qu'il a bien été mis en ligne`);
   renderLyrics(song, audio);
   const dlBtn = document.getElementById('playerDownload');
   dlBtn.innerHTML = `${ICON_DOWNLOAD} Télécharger`;
