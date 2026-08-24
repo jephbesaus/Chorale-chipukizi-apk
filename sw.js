@@ -27,10 +27,7 @@ self.addEventListener('activate', (event) => {
    de façon permanente : on les sert toujours depuis le réseau pour éviter d'afficher
    une ancienne version bloquée en cache après une mise à jour. */
 function isNetworkOnly(url) {
-  return url.pathname.endsWith('data.json')
-    || url.pathname.includes('/assets/audio/')
-    || url.pathname.includes('/assets/images/')
-    || url.pathname.includes('/assets/videos/');
+  return /\.(mp3|wav|m4a|jpg|jpeg|png|webp|mp4)$/i.test(url.pathname);
 }
 
 self.addEventListener('fetch', (event) => {

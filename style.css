@@ -139,33 +139,39 @@ a { color: var(--gold); }
 .carousel::-webkit-scrollbar { display: none; }
 .carousel-slide {
   scroll-snap-align: start;
-  flex: 0 0 100%;
-  min-height: 260px;
+  flex: 0 0 88%;
+  min-height: 200px;
   border-radius: 22px;
-  padding: 24px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-color: var(--card);
-  background-size: cover;
-  background-position: center;
   position: relative;
   overflow: hidden;
   cursor: pointer;
 }
+.carousel-slide.card-purple { background: linear-gradient(135deg, #7b5fc9, #a98fe0); }
+.carousel-slide.card-green  { background: linear-gradient(135deg, #2f9e5c, #6bd18f); }
+.carousel-slide.card-orange { background: linear-gradient(135deg, var(--gold), var(--yellow)); }
+.carousel-slide .slide-photo {
+  position: absolute; right: 0; bottom: 0; top: 0; width: 46%;
+  object-fit: cover; object-position: top center;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 30%);
+  mask-image: linear-gradient(90deg, transparent, #000 30%);
+}
 .carousel-slide .slide-scrim {
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(10,10,15,0.05) 0%, rgba(10,10,15,0.55) 55%, rgba(10,10,15,0.92) 100%);
+  background: linear-gradient(90deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 55%, rgba(0,0,0,0.15) 100%);
 }
 .carousel-slide .eyebrow {
   font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
-  color: rgba(255,255,255,0.75); margin: 0 0 6px; position: relative;
+  color: rgba(255,255,255,0.75); margin: 0 0 6px; position: relative; z-index: 1;
 }
 .carousel-slide h3 {
-  margin: 0 0 6px; font-size: 26px; font-weight: 800; letter-spacing: -0.01em;
-  text-transform: uppercase; line-height: 1.15; position: relative;
+  margin: 0 0 6px; font-size: 22px; font-weight: 800; letter-spacing: -0.01em;
+  line-height: 1.15; position: relative; z-index: 1; max-width: 75%;
 }
-.carousel-slide p { margin: 0; font-size: 14px; opacity: .9; position: relative; }
+.carousel-slide p { margin: 0; font-size: 13px; opacity: .92; position: relative; z-index: 1; max-width: 70%; color: #fff; }
 
 /* ===== ICON BUTTONS (style unifié, inspiré de l'exemple) ===== */
 .icon-btn {

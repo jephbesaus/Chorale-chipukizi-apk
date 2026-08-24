@@ -17,38 +17,38 @@ const EMBEDDED_DATA = {
   songs: [
     {
       id: 1, title: 'Nisi Rudi Nyuma', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'assets/audio/nisi-rudi-nyuma.mp3', lyrics: [], image: 'assets/images/choristers-4.jpg',
+      file: 'nisi-rudi-nyuma.mp3', lyrics: [], image: 'choristers-4.jpg',
       plays: 0, new: true, hero: true,
-      heroImage: 'assets/images/hero-woman.jpg', heroCaption: 'One voice, one heart, one purpose.'
+      heroImage: 'hero-woman.jpg', heroCaption: 'One voice, one heart, one purpose.'
     },
     {
       id: 2, title: 'Baba Yetu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'assets/audio/baba-yetu.mp3', lyrics: [], image: 'assets/images/choristers-1.jpg',
+      file: 'baba-yetu.mp3', lyrics: [], image: 'choristers-1.jpg',
       plays: 0, new: true
     },
     {
       id: 3, title: 'Fungua Mbingu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'assets/audio/fungua-mbingu.mp3', lyrics: [], image: 'assets/images/choristers-3.jpg',
+      file: 'fungua-mbingu.mp3', lyrics: [], image: 'choristers-3.jpg',
       plays: 0, new: true
     },
     {
       id: 4, title: 'Garama', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'assets/audio/garama.mp3', lyrics: [], image: 'assets/images/choristers-2.jpg',
+      file: 'garama.mp3', lyrics: [], image: 'choristers-2.jpg',
       plays: 0, new: false
     },
     {
       id: 5, title: 'Uni Jaze', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'assets/audio/uni-jaze.mp3', lyrics: [], image: 'assets/images/choristers-5.jpg',
+      file: 'uni-jaze.mp3', lyrics: [], image: 'choristers-5.jpg',
       plays: 0, new: false
     },
     {
       id: 6, title: 'Jerusalemu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'assets/audio/jerusalemu.mp3', lyrics: [], image: 'assets/images/choristers-6.jpg',
+      file: 'jerusalemu.mp3', lyrics: [], image: 'choristers-6.jpg',
       plays: 0, new: false
     },
     {
       id: 7, title: 'Mungu Ni Chef', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'assets/audio/mungu-ni-chef.mp3', lyrics: [], image: 'assets/images/choristers-4.jpg',
+      file: 'mungu-ni-chef.mp3', lyrics: [], image: 'choristers-4.jpg',
       plays: 0, new: false
     }
   ]
@@ -98,6 +98,7 @@ async function loadData() {
   renderSongList();
   renderVideoSongSelect();
   updateCreditsUI();
+  renderStudioProjects();
   loadDurations();
 }
 
@@ -118,32 +119,37 @@ document.querySelectorAll('[data-page]').forEach((el) => {
 });
 
 /* ============ ACCUEIL ============ */
+const CARD_PALETTE = ['card-purple', 'card-green', 'card-orange'];
+
 function renderHome() {
   const carousel = document.getElementById('carousel');
   const hero = DATA.songs.find((s) => s.hero) || DATA.songs[0];
+  const others = DATA.songs.filter((s) => s.id !== (hero ? hero.id : null));
+  const slides = hero ? [hero, ...others] : DATA.songs;
 
-  carousel.innerHTML = !hero ? '' : `
-    <div class="carousel-slide" data-id="${hero.id}" style="background-image:url('${hero.heroImage || hero.image}')">
+  carousel.innerHTML = slides.map((s, i) => `
+    <div class="carousel-slide ${CARD_PALETTE[i % CARD_PALETTE.length]}" data-id="${s.id}">
+      <img class="slide-photo" src="${s.heroImage || s.image}" alt="">
       <div class="slide-scrim"></div>
       <p class="eyebrow">Chorale Chipukizi</p>
-      <h3>${escapeHtml(hero.title)}</h3>
-      <p>${escapeHtml(hero.heroCaption || '')}</p>
+      <h3>${escapeHtml(s.title)}</h3>
+      <p>${escapeHtml(s.heroCaption || 'One voice, one heart, one purpose.')}</p>
       <div class="card-controls">
         <button class="icon-btn icon-btn--play" data-action="play" aria-label="Écouter">${ICON_PLAY}</button>
         <button class="icon-btn icon-btn--ghost" data-action="like" aria-label="Aimer">${ICON_HEART}</button>
         <button class="icon-btn icon-btn--ghost" data-action="download" aria-label="Télécharger">${ICON_DOWNLOAD}</button>
+        <button class="icon-btn icon-btn--ghost icon-btn--more" data-action="more" aria-label="Plus d'options">${ICON_MORE}</button>
       </div>
     </div>
-  `;
-  const heroSlide = carousel.querySelector('.carousel-slide');
-  if (heroSlide) {
-    const id = Number(heroSlide.dataset.id);
-    heroSlide.querySelector('[data-action="play"]').addEventListener('click', (e) => { e.stopPropagation(); openPlayer(id); });
-    heroSlide.querySelector('[data-action="like"]').addEventListener('click', (e) => { e.stopPropagation(); toggleLike(id, e.currentTarget); });
-    heroSlide.querySelector('[data-action="download"]').addEventListener('click', (e) => { e.stopPropagation(); downloadSong(id); });
-    heroSlide.querySelector('[data-action="like"]').classList.toggle('liked', likedSongs.has(id));
-    heroSlide.addEventListener('click', () => openPlayer(id));
-  }
+  `).join('');
+  carousel.querySelectorAll('.carousel-slide').forEach((slide) => {
+    const id = Number(slide.dataset.id);
+    slide.querySelector('[data-action="play"]').addEventListener('click', (e) => { e.stopPropagation(); openPlayer(id); });
+    slide.querySelector('[data-action="like"]').addEventListener('click', (e) => { e.stopPropagation(); toggleLike(id, e.currentTarget); });
+    slide.querySelector('[data-action="download"]').addEventListener('click', (e) => { e.stopPropagation(); downloadSong(id); });
+    slide.querySelector('[data-action="like"]').classList.toggle('liked', likedSongs.has(id));
+    slide.addEventListener('click', () => openPlayer(id));
+  });
 
   const top5 = [...DATA.songs].sort((a, b) => (b.plays || 0) - (a.plays || 0) || a.id - b.id).slice(0, 5);
   const top5List = document.getElementById('top5List');
@@ -165,6 +171,7 @@ function renderHome() {
   });
 
   const releaseRow = document.getElementById('releaseRow');
+  const latest = DATA.songs.filter((s) => s.new);
   releaseRow.innerHTML = latest.map((s) => `
     <div class="release-card" data-id="${s.id}">
       <div class="release-cover-wrap">
@@ -818,6 +825,7 @@ document.getElementById('exportStudioBtn').addEventListener('click', () => {
 });
 
 function renderStudioProjects() {
+  if (!DATA) return;
   const list = document.getElementById('studioProjectList');
   const projects = DATA.user.projects || [];
   if (projects.length === 0) { list.innerHTML = '<p class="empty-state">Aucun projet pour le moment</p>'; return; }
@@ -833,7 +841,6 @@ function renderStudioProjects() {
     card.addEventListener('click', () => showToast('Ouverture du projet — reprise du travail'));
   });
 }
-renderStudioProjects();
 
 /* ============ VIDÉOS ============ */
 function renderVideoSongSelect() {
