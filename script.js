@@ -19,37 +19,43 @@ const EMBEDDED_DATA = {
       id: 1, title: 'Nisi Rudi Nyuma', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
       file: 'nisi-rudi-nyuma.mp3', lyrics: [], image: 'choristers-4.jpg',
       plays: 0, new: true, hero: true,
-      heroImage: 'hero-woman.jpg', heroCaption: 'One voice, one heart, one purpose.'
+      heroImage: 'discover-purple.jpg', cardColor: 'card-purple', heroCaption: 'One voice, one heart, one purpose.'
     },
     {
       id: 2, title: 'Baba Yetu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
       file: 'baba-yetu.mp3', lyrics: [], image: 'choristers-1.jpg',
-      plays: 0, new: true
+      plays: 0, new: true,
+      heroImage: 'discover-green.jpg', cardColor: 'card-green'
     },
     {
       id: 3, title: 'Fungua Mbingu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
       file: 'fungua-mbingu.mp3', lyrics: [], image: 'choristers-3.jpg',
-      plays: 0, new: true
+      plays: 0, new: true,
+      heroImage: 'discover-yellow.jpg', cardColor: 'card-yellow'
     },
     {
       id: 4, title: 'Garama', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
       file: 'garama.mp3', lyrics: [], image: 'choristers-2.jpg',
-      plays: 0, new: false
+      plays: 0, new: false,
+      heroImage: 'discover-orange.jpg', cardColor: 'card-orange'
     },
     {
       id: 5, title: 'Uni Jaze', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
       file: 'uni-jaze.mp3', lyrics: [], image: 'choristers-5.jpg',
-      plays: 0, new: false
+      plays: 0, new: false,
+      heroImage: 'discover-blue.jpg', cardColor: 'card-blue'
     },
     {
       id: 6, title: 'Jerusalemu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
       file: 'jerusalemu.mp3', lyrics: [], image: 'choristers-6.jpg',
-      plays: 0, new: false
+      plays: 0, new: false,
+      heroImage: 'discover-purple.jpg', cardColor: 'card-purple'
     },
     {
       id: 7, title: 'Mungu Ni Chef', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
       file: 'mungu-ni-chef.mp3', lyrics: [], image: 'choristers-4.jpg',
-      plays: 0, new: false
+      plays: 0, new: false,
+      heroImage: 'discover-green.jpg', cardColor: 'card-green'
     }
   ]
 };
@@ -119,16 +125,14 @@ document.querySelectorAll('[data-page]').forEach((el) => {
 });
 
 /* ============ ACCUEIL ============ */
-const CARD_PALETTE = ['card-purple', 'card-green', 'card-orange'];
-
 function renderHome() {
   const carousel = document.getElementById('carousel');
   const hero = DATA.songs.find((s) => s.hero) || DATA.songs[0];
   const others = DATA.songs.filter((s) => s.id !== (hero ? hero.id : null));
   const slides = hero ? [hero, ...others] : DATA.songs;
 
-  carousel.innerHTML = slides.map((s, i) => `
-    <div class="carousel-slide ${CARD_PALETTE[i % CARD_PALETTE.length]}" data-id="${s.id}">
+  carousel.innerHTML = slides.map((s) => `
+    <div class="carousel-slide ${s.cardColor || 'card-purple'}" data-id="${s.id}">
       <img class="slide-photo" src="${s.heroImage || s.image}" alt="">
       <div class="slide-scrim"></div>
       <p class="eyebrow">Chorale Chipukizi</p>

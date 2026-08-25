@@ -150,9 +150,11 @@ a { color: var(--gold); }
   overflow: hidden;
   cursor: pointer;
 }
-.carousel-slide.card-purple { background: linear-gradient(135deg, #7b5fc9, #a98fe0); }
-.carousel-slide.card-green  { background: linear-gradient(135deg, #2f9e5c, #6bd18f); }
-.carousel-slide.card-orange { background: linear-gradient(135deg, var(--gold), var(--yellow)); }
+.carousel-slide.card-purple { background: linear-gradient(135deg, #6a3fa0, #7f4fbf); }
+.carousel-slide.card-green  { background: linear-gradient(135deg, #2e8f47, #37a453); }
+.carousel-slide.card-yellow { background: linear-gradient(135deg, #d9a900, #fece00); }
+.carousel-slide.card-orange { background: linear-gradient(135deg, #c8760a, #e58a01); }
+.carousel-slide.card-blue   { background: linear-gradient(135deg, #01699a, #018bc9); }
 .carousel-slide .slide-photo {
   position: absolute; right: 0; bottom: 0; top: 0; width: 46%;
   object-fit: cover; object-position: top center;
