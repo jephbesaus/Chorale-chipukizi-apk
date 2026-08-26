@@ -17,45 +17,357 @@ const EMBEDDED_DATA = {
   songs: [
     {
       id: 1, title: 'Nisi Rudi Nyuma', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'nisi-rudi-nyuma.mp3', lyrics: [], image: 'choristers-4.jpg',
+      file: 'nisi-rudi-nyuma.mp3', image: 'choristers-4.jpg',
       plays: 0, new: true, hero: true,
-      heroImage: 'discover-purple.jpg', cardColor: 'card-purple', heroCaption: 'One voice, one heart, one purpose.'
+      heroImage: 'discover-purple.jpg', cardColor: 'card-purple', heroCaption: 'One voice, one heart, one purpose.',
+      lyricsBg: 'bg-clef-red.jpg',
+      lyrics: [
+        { t: 0, text: '♪ Instrumental ♪' },
+        { t: 7, text: '♪ Instrumental ♪' },
+        { t: 14, text: '♪ Instrumental ♪' },
+        { t: 21, text: '♪ Instrumental ♪' },
+        { t: 28, text: '♪ Instrumental ♪' },
+        { t: 35, text: 'Kuna mahali nimetoka,' },
+        { t: 40, text: 'Pia mahali ninakwenda,' },
+        { t: 45, text: 'Mkono wako siponiongoza,' },
+        { t: 50, text: 'Sitaweza.' },
+        { t: 55, text: 'Maana naona mji karibu,' },
+        { t: 60, text: 'Mateso nayo yapata,' },
+        { t: 65, text: 'Huko mbele sita ya ona,' },
+        { t: 70, text: 'Nitashinda.' },
+        { t: 75, text: 'Nivike nguvu,' },
+        { t: 85, text: 'Bwana yesu, nionyeshe ishara,' },
+        { t: 90, text: 'Uniongoze. Eh Mfalme,' },
+        { t: 95, text: 'Mwendo nimalize.' },
+        { t: 100, text: 'Kuna mahali nilipotoka,' },
+        { t: 105, text: 'Pia mahali ninakwenda,' },
+        { t: 110, text: 'Mkono wako siponiongoza Bwana,' },
+        { t: 115, text: 'Sitaweza.' },
+        { t: 125, text: 'Maana naona mji karibu,' },
+        { t: 130, text: 'Na mateso yote nayo yapata,' },
+        { t: 135, text: 'Huko mbele,' },
+        { t: 139, text: 'Nitashinda.' },
+        { t: 143, text: 'Kuna mahali nilipotoka,' },
+        { t: 148, text: 'Pia mahali ninakwenda,' },
+        { t: 153, text: 'Mkono wako Bwana,' },
+        { t: 158, text: 'Sitaweza.' },
+        { t: 165, text: 'Maana naona mji karibu,' },
+        { t: 170, text: 'Mateso nayo yapata,' },
+        { t: 175, text: 'Huko mbele sitaiona,' },
+        { t: 180, text: 'Nitashinda.' },
+        { t: 185, text: 'Nivike nguvu zako Bwana,' },
+        { t: 190, text: 'Nionyeshe, nionyeshe ishara zako' },
+        { t: 195, text: 'Kisha uniongoze Mfalme wa mbingu na dunia,' },
+        { t: 200, text: 'Uni ongoze, Mwendo nimalize.' },
+        { t: 205, text: 'Tuko mbele zako Eh roho wa Mungu Muumbaji,' },
+        { t: 211, text: 'Twa taka kuongozwa nawe' },
+        { t: 217, text: 'Endelea kuziongoza hatua zetu mbele ili tuserudi nyuma' },
+        { t: 223, text: 'tui fikie malengo yetu.' },
+        { t: 229, text: 'Maana tukiwa na mwanga wako,' },
+        { t: 235, text: 'tutayafanya mapenzi yako duniani kwa kupendeza,' },
+        { t: 241, text: 'Na vita vyote tutalishinda kupitia wewe Jehova Sabaoth. Haleluya!' },
+        { t: 255, text: 'Bila wewe, siwezi lolote.' },
+        { t: 260, text: 'Ebenezer Mungu msaada wetu, Haleluya.' },
+        { t: 265, text: 'Ebenezer mungu wangu' },
+        { t: 270, text: 'Nikiwa na wewe, sita ofu lolote, Bwana.' },
+        { t: 275, text: 'Paza sauti tena tuimbe pamoja :' },
+        { t: 280, text: 'Nikiwa na wewe, sitaogopa lolote, eh Bwana.' },
+        { t: 285, text: 'Haleluya !' },
+        { t: 295, text: 'Nisirudi nyuma,' },
+        { t: 299, text: 'Bwana niwezeshe,' },
+        { t: 303, text: 'Nisitazame tu na maneno yao.' },
+        { t: 307, text: 'Nisirudi nyuma,' },
+        { t: 311, text: 'Bwana niwezeshe,' },
+        { t: 315, text: 'Nisitazam watu na maneno yao.' },
+        { t: 319, text: 'Nisirudi nyuma,' },
+        { t: 323, text: 'Bwana niwezeshe,' },
+        { t: 327, text: 'Nisitazame watu na maneno yao.' },
+        { t: 331, text: 'Nisirudi nyuma,' },
+        { t: 335, text: 'Bwana niwezeshe Bwana,' },
+        { t: 339, text: 'Nisitazame watu na maneno yao.' },
+        { t: 345, text: 'Nijue kwamba, Ni wewe Bwana,' },
+        { t: 350, text: 'Utanilinda kufanya kazi yako Bwana,' },
+        { t: 355, text: 'Milele yote, milele yote.' },
+        { t: 360, text: 'Nijue Yakwamba Bwana, Ni wewe Bwana,' },
+        { t: 365, text: 'Utani vika nguvu Milele yote.' },
+        { t: 370, text: 'Nisirudi nyuma...' },
+        { t: 375, text: 'Eh Mungu mwenye haki, peke yetu hatuwezi...' }
+      ]
     },
     {
       id: 2, title: 'Baba Yetu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'baba-yetu.mp3', lyrics: [], image: 'choristers-1.jpg',
+      file: 'baba-yetu.mp3', image: 'choristers-1.jpg',
       plays: 0, new: true,
-      heroImage: 'discover-green.jpg', cardColor: 'card-green'
+      heroImage: 'discover-green.jpg', cardColor: 'card-green',
+      lyricsBg: 'bg-piano.jpg',
+      lyrics: [
+        { t: 0, text: 'Baba yetu uliye mbinguni' },
+        { t: 3.5, text: 'Jina lako litukuzwe' },
+        { t: 7, text: 'Ufalme wako uje kwetu' },
+        { t: 10.5, text: 'Mapenzi yako yatimizwe' },
+        { t: 14, text: 'Baba yetu uliye mbinguni' },
+        { t: 17.5, text: 'Jina lako litukuzwe' },
+        { t: 21, text: 'Ufalme wako uje kwetu' },
+        { t: 22, text: 'Duniyani kama mbinguni' },
+        { t: 25.5, text: 'Tupe leo riziki zetu' },
+        { t: 29, text: 'Samehe makosa yetu' },
+        { t: 32.5, text: 'Kama tu samevyo wa deni wetu' },
+        { t: 36, text: 'Duniyani kama mbinguni' },
+        { t: 39.5, text: 'Tupe leo riziki zetu' },
+        { t: 43, text: 'Samehe makosa yetu' },
+        { t: 44, text: 'Baba yetu uliye mbinguni' },
+        { t: 47.5, text: 'Jina lako litukuzwe' },
+        { t: 51, text: 'Ufalme wako uje kwetu' },
+        { t: 54.5, text: 'Mapenzi yako yatimizwe' },
+        { t: 58, text: 'Baba yetu uliye mbinguni' },
+        { t: 61.5, text: 'Jina lako litukuzwe' },
+        { t: 62, text: '♪ Instrumental ♪' },
+        { t: 72, text: '♪ Instrumental ♪' },
+        { t: 82, text: '♪ Instrumental ♪' },
+        { t: 92, text: '♪ Instrumental ♪' },
+        { t: 102, text: '♪ Instrumental ♪' },
+        { t: 112, text: '♪ Instrumental ♪' },
+        { t: 122, text: '♪ Instrumental ♪' },
+        { t: 132, text: '♪ Instrumental ♪' },
+        { t: 142, text: '♪ Instrumental ♪' },
+        { t: 152, text: 'Usi tu ache majaribuni' },
+        { t: 155.5, text: 'Bali utu okowe na yule muovu' },
+        { t: 159, text: 'Usi tu ache majaribuni' },
+        { t: 162.5, text: 'Bali utu okowe na yule muovu yeee' },
+        { t: 166, text: 'Usi tu ache majaribuni' },
+        { t: 169.5, text: 'Bali utu okowe na yule muovu' },
+        { t: 173, text: 'Yeee...' },
+        { t: 174, text: 'Baba yetu uliye mbinguni' },
+        { t: 177.5, text: 'Jina lako litukuzwe' },
+        { t: 181, text: 'Ufalme wako uje kwetu' },
+        { t: 184.5, text: 'Mapenzi yako yatimizwe' },
+        { t: 188, text: 'Baba yetu uliye mbinguni' },
+        { t: 191.5, text: 'Jina lako litukuzwe' },
+        { t: 195, text: 'Ufalme wako uje kwetu' },
+        { t: 196, text: 'Kwa kuwa ufalme ni wako' },
+        { t: 199, text: 'Na nguvu hata milele' },
+        { t: 202, text: 'Kwa kuwa ufalme ni wako' },
+        { t: 205, text: 'Na nguvu hata milele' },
+        { t: 208, text: 'Ameeeen... Amen...' },
+        { t: 211, text: '♪ Amen... ♪' }
+      ]
     },
     {
       id: 3, title: 'Fungua Mbingu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'fungua-mbingu.mp3', lyrics: [], image: 'choristers-3.jpg',
+      file: 'fungua-mbingu.mp3', image: 'choristers-3.jpg',
       plays: 0, new: true,
-      heroImage: 'discover-yellow.jpg', cardColor: 'card-yellow'
+      heroImage: 'discover-yellow.jpg', cardColor: 'card-yellow',
+      lyricsBg: 'bg-notes-blue.jpg',
+      lyrics: [
+        { t: 0, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 4, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 8, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 12, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 16, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 20, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 24, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 28, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 35, text: 'Bwana wetu ni mkuu sana' },
+        { t: 39, text: 'Anastahili sifa na heshima' },
+        { t: 43, text: 'Kwa nguvu zake aliumba mbingu' },
+        { t: 47, text: 'Na kwa neema yake alituokoa' },
+        { t: 51, text: 'Bwana wetu ni mkuu sana' },
+        { t: 55, text: 'Anastahili sifa na heshima' },
+        { t: 59, text: 'Kwa nguvu zake aliumba mbingu' },
+        { t: 63, text: 'Na kwa neema yake alituokoa' },
+        { t: 70, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 74, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 78, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 82, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 86, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 90, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 94, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 98, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 100, text: 'Mbinguni kuna furaha tele' },
+        { t: 104, text: 'Malaika wanaimba tenzi' },
+        { t: 108, text: 'Wanamwabudu Mungu wetu' },
+        { t: 112, text: 'Mwenye enzi na utukufu' },
+        { t: 116, text: 'Mbinguni kuna furaha tele' },
+        { t: 120, text: 'Malaika wanaimba tenzi' },
+        { t: 124, text: 'Wanamwabudu Mungu wetu' },
+        { t: 128, text: 'Mwenye enzi na utukufu' },
+        { t: 135, text: '♪ Instrumental ♪' },
+        { t: 141, text: '♪ Instrumental ♪' },
+        { t: 147, text: '♪ Instrumental ♪' },
+        { t: 153, text: '♪ Instrumental ♪' },
+        { t: 159, text: '♪ Instrumental ♪' },
+        { t: 165, text: 'Fungua, fungua, fungua mbingu' },
+        { t: 169, text: 'Tumwone, tumwone Mfalme wetu' },
+        { t: 173, text: 'Fungua, fungua, fungua mbingu' },
+        { t: 177, text: 'Tumwone, tumwone Mfalme wetu' },
+        { t: 181, text: 'Fungua, fungua, fungua mbingu' },
+        { t: 185, text: 'Tumwone, tumwone Mfalme wetu' },
+        { t: 189, text: 'Fungua, fungua, fungua mbingu' },
+        { t: 193, text: 'Tumwone, tumwone Mfalme wetu' },
+        { t: 200, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 204, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 208, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 212, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 216, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 220, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 224, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 228, text: 'Tumwone Mfalme wa utukufu' },
+        { t: 230, text: 'Tumwone Mfalme wetu' },
+        { t: 234, text: 'Mfalme wa utukufu' },
+        { t: 238, text: 'Tumwone Mfalme wetu' },
+        { t: 242, text: 'Mfalme wa utukufu' },
+        { t: 246, text: 'Tumwone Mfalme wetu' },
+        { t: 250, text: 'Mfalme wa utukufu' },
+        { t: 254, text: 'Tumwone Mfalme wetu' },
+        { t: 258, text: 'Mfalme wa utukufu' },
+        { t: 262, text: 'Fungua mbingu, fungua mbingu' },
+        { t: 266, text: 'Tumwone Mfalme wa utukufu' }
+      ]
     },
     {
       id: 4, title: 'Garama', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'garama.mp3', lyrics: [], image: 'choristers-2.jpg',
+      file: 'garama.mp3', image: 'choristers-2.jpg',
       plays: 0, new: false,
-      heroImage: 'discover-orange.jpg', cardColor: 'card-orange'
+      heroImage: 'discover-orange.jpg', cardColor: 'card-orange',
+      lyricsBg: 'bg-mic-warm.jpg', lyrics: []
     },
     {
       id: 5, title: 'Uni Jaze', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'uni-jaze.mp3', lyrics: [], image: 'choristers-5.jpg',
+      file: 'uni-jaze.mp3', image: 'choristers-5.jpg',
       plays: 0, new: false,
-      heroImage: 'discover-blue.jpg', cardColor: 'card-blue'
+      heroImage: 'discover-blue.jpg', cardColor: 'card-blue',
+      lyricsBg: 'bg-mic-blue.jpg', lyrics: []
     },
     {
       id: 6, title: 'Jerusalemu', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'jerusalemu.mp3', lyrics: [], image: 'choristers-6.jpg',
+      file: 'jerusalemu.mp3', image: 'choristers-6.jpg',
       plays: 0, new: false,
-      heroImage: 'discover-purple.jpg', cardColor: 'card-purple'
+      heroImage: 'discover-purple.jpg', cardColor: 'card-purple',
+      lyricsBg: 'bg-mic-dark.jpg',
+      lyrics: [
+        { t: 0, text: 'Jerusalemu, natamani nifike huko' },
+        { t: 4, text: 'Nionane na Yesu, nitaketi pamoja naye' },
+        { t: 8, text: 'Nitashangilia, nitacheza-cheza' },
+        { t: 12, text: 'Nikiruka-ruka pamoja na Yesu, pamoja na Yesu' },
+        { t: 16, text: 'Nitashangilia, nitacheza-cheza' },
+        { t: 20, text: 'Nikiruka-ruka pamoja na Yesu, pamoja na Yesu' },
+        { t: 24, text: 'Ni furaha tele tutakapoingia' },
+        { t: 28, text: 'Kwenye makao ya milele aliyotuaandalia' },
+        { t: 32, text: 'Ni furaha tele tutakapoingia' },
+        { t: 36, text: 'Kwenye makao ya milele aliyotuaandalia' },
+        { t: 40, text: '♪ Instrumental ♪' },
+        { t: 46, text: '♪ Instrumental ♪' },
+        { t: 52, text: '♪ Instrumental ♪' },
+        { t: 58, text: '♪ Instrumental ♪' },
+        { t: 64, text: '♪ Instrumental ♪' },
+        { t: 70, text: 'Bwana Yesu atashika kitambaa' },
+        { t: 74, text: 'Na kunifuta machozi akisema:' },
+        { t: 78, text: 'Karibu mwanangu, uliye shinda' },
+        { t: 82, text: 'Malaika wataulizana:' },
+        { t: 86, text: 'Hawa ni wa nani, na wametoka wapi?' },
+        { t: 90, text: 'Ila Yesu atajibu:' },
+        { t: 94, text: 'Hawa ni wanangu walioshinda dhiki za dunia.' },
+        { t: 98, text: 'Nitashangilia, nitacheza-cheza' },
+        { t: 102, text: 'Nikiruka-ruka pamoja na Yesu, pamoja na Yesu,' },
+        { t: 106, text: 'Ni furaha!' },
+        { t: 110, text: 'Jerusalemu, natamani nifike huko' },
+        { t: 114, text: 'Nionane na Yesu, nitaketi pamoja naye' },
+        { t: 118, text: 'Nitashangilia, nitacheza-cheza' },
+        { t: 122, text: 'Nikiruka-ruka pamoja na Yesu, pamoja na Yesu' },
+        { t: 126, text: 'Nitashangilia, nitacheza-cheza' },
+        { t: 130, text: 'Nikiruka-ruka pamoja na Yesu, pamoja na Yesu,' },
+        { t: 134, text: 'Ni furaha!' },
+        { t: 145, text: 'Jitaidi, ewe mwenzangu, tufike kule' },
+        { t: 149, text: 'Kwa baba ambapo hakuna shida, machozi na kulia' },
+        { t: 153, text: 'Tuta vi acha huko duniani, kwa baba ni furaha' },
+        { t: 157, text: 'Kuuimba na kucheza, milele tutaishi huko' },
+        { t: 161, text: 'Tuta kula vinono, chakula ya mbinguni' },
+        { t: 165, text: 'Amani na furaha ni asili ya huko kwetu' },
+        { t: 169, text: 'Tuta waona wale wote waliotangulia' },
+        { t: 173, text: 'Baba zetu wa imani, huko tutaishi nao' },
+        { t: 185, text: 'Jerusalemu, natamani nifike huko' },
+        { t: 189, text: 'Nionane na Yesu, nitaketi pamoja naye' },
+        { t: 193, text: 'Nitashangilia, nitacheza-cheza' },
+        { t: 197, text: 'Nikiruka-ruka pamoja na Yesu, pamoja na Yesu' },
+        { t: 201, text: 'Nitashangilia, nitacheza-cheza' },
+        { t: 205, text: 'Nikiruka-ruka pamoja na Yesu, pamoja na Yesu,' },
+        { t: 209, text: 'Ni furaha!' },
+        { t: 215, text: 'Tutashangilia, tuta cheza-cheza' },
+        { t: 219, text: 'Tuki ruka-ruka pamoja na Yesu, pamoja na Yesu... eeeh' },
+        { t: 223, text: 'Tutashangilia, tutacheza-cheza' },
+        { t: 227, text: 'Tuki ruka-ruka pamoja na Yesu, pamoja na Yesu...' },
+        { t: 231, text: 'Tutashangilia, tutacheza-cheza' },
+        { t: 235, text: 'Tuki ruka-ruka pamoja na Yesu, pamoja na Yesu...' },
+        { t: 239, text: 'Ni furaha tele tutakapoingia' },
+        { t: 243, text: 'Kwenye makao ya milele aliyotuaandalia...' },
+        { t: 247, text: 'Ni furaha tele tutakapoingia' },
+        { t: 251, text: 'Kwenye makao ya milele aliyotuaandalia...' },
+        { t: 255, text: 'Tutashangilia, tutacheza-cheza' },
+        { t: 259, text: 'Tutakiruka-ruka pamoja na Yesu, pamoja na Yesu,' },
+        { t: 263, text: 'Ni furaha!' }
+      ]
     },
     {
       id: 7, title: 'Mungu Ni Chef', artist: 'Chorale Chipukizi', duration: '', type: 'audio',
-      file: 'mungu-ni-chef.mp3', lyrics: [], image: 'choristers-4.jpg',
+      file: 'mungu-ni-chef.mp3', image: 'choristers-4.jpg',
       plays: 0, new: false,
-      heroImage: 'discover-green.jpg', cardColor: 'card-green'
+      heroImage: 'discover-green.jpg', cardColor: 'card-green',
+      lyricsBg: 'bg-mic-smoke.jpg',
+      lyrics: [
+        { t: 0, text: 'Amina lele, Amina' },
+        { t: 3, text: 'Amina lele,' },
+        { t: 6, text: 'Amina lele, Amina lele' },
+        { t: 9, text: 'Amina lele, Amina lele' },
+        { t: 20, text: 'Yesu njo faraja ya nafsi yangu' },
+        { t: 24, text: 'Nimeshampata, na wala sitamwacha kamwe' },
+        { t: 28, text: 'Yesu njo faraja ya nafsi yangu' },
+        { t: 32, text: 'Nimeshampata, na wala sitamwacha kamwe' },
+        { t: 36, text: 'Adui wani jihapo kwa njia moja, yeye uwa sambaza kwa njia saba' },
+        { t: 41, text: 'Adui ani jihapo kwa njia moja, yeye uwa sambaza kwa njia saba' },
+        { t: 46, text: 'Nafsi yangu imeokoka kama ndege kwa mtego' },
+        { t: 50, text: 'Mtego umevunjika nami nimepata kuokoka' },
+        { t: 54, text: 'Msaada wangu u katika jina lake' },
+        { t: 58, text: 'Nafsi yangu imeokoka kama ndege kwa mtego' },
+        { t: 62, text: 'Mtego umevunjika nami nimepata kuokoka' },
+        { t: 66, text: 'Msaada wangu u katika jina lake' },
+        { t: 75, text: 'Namupenda' },
+        { t: 78, text: 'Namwimbia aaaa' },
+        { t: 81, text: 'Nalisifu jina lake' },
+        { t: 84, text: 'Milele yote' },
+        { t: 87, text: 'Namupenda' },
+        { t: 90, text: 'Namwimbia' },
+        { t: 93, text: 'Nalisifu jina lake' },
+        { t: 96, text: 'Milele yote' },
+        { t: 105, text: 'Chef! Chef! Chef wa maisha yangu!' },
+        { t: 109, text: 'Chef! Chef chef wa maisha yangu!' },
+        { t: 113, text: 'Chef! Chef chef wa maisha yangu!' },
+        { t: 125, text: 'Kama si Bwana alikuwa upande wangu' },
+        { t: 129, text: 'Maduui wangenimeza, ai kweli' },
+        { t: 133, text: 'Bwana akiwa upande wangu, nani aliye juu yangu?' },
+        { t: 137, text: 'Mtego umeufyatua nami nimefika salama' },
+        { t: 141, text: 'Ndio maana...' },
+        { t: 145, text: 'Naimba, naimba kwa shangwe' },
+        { t: 149, text: 'Sifa za Bwana zivume milele' },
+        { t: 153, text: 'Naimba, naimba kwa shangwe' },
+        { t: 157, text: 'Sifa za Bwana zivume milele' },
+        { t: 160, text: 'Nina Baba, siko yatima' },
+        { t: 164, text: 'Ye njo Mfalme ananilindaga' },
+        { t: 168, text: 'Nina Baba, siko yatima' },
+        { t: 172, text: 'Ye njo Mfalme ananilindaga' },
+        { t: 176, text: 'Nina Baba (Nina Baba)' },
+        { t: 180, text: 'Siko yatima (Sikai yatima mimi)' },
+        { t: 184, text: 'Ye njo Mfalme ananilindaga' },
+        { t: 188, text: 'Nina baba siko yatima ye njo mufalme anani' },
+        { t: 192, text: 'Lindaga' },
+        { t: 195, text: 'Mungu ni chef wangu' },
+        { t: 199, text: 'Chef! Chef! Chef wa maisha yangu!' },
+        { t: 203, text: 'Hata madadui wani ji hapo... Niko na chef wangu' },
+        { t: 207, text: 'Chef! Chef wa maisha yangu!' },
+        { t: 211, text: 'Chef! Chef wa maisha yangu!' },
+        { t: 215, text: 'Chef! Chef wa maisha yangu!' },
+        { t: 219, text: 'Mungu ni chef wangu' },
+        { t: 223, text: 'Chef! Chef wa maisha yangu!' }
+      ]
     }
   ]
 };
@@ -68,6 +380,8 @@ const ICON_MORE = '<svg viewBox="0 0 24 24" width="16" height="16"><circle cx="5
 const ICON_AUDIO_TAG = '<svg viewBox="0 0 24 24" width="12" height="12" style="vertical-align:-1px"><path d="M9 18V5l12-2v13" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="18" r="3" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="16" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
 const ICON_VIDEO_TAG = '<svg viewBox="0 0 24 24" width="12" height="12" style="vertical-align:-1px"><path d="M4 6h11v12H4z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15 10l5-3v10l-5-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
 const ICON_SHARE = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.7l7.6-4.4M8.2 13.3l7.6 4.4"/></svg>';
+const ICON_PLAY_BIG = '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" width="26" height="26"><rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/></svg>';
 
 function shareSong(id) {
   const song = DATA.songs.find((s) => s.id === id);
@@ -292,53 +606,88 @@ function downloadSong(id) {
   showToast(`Téléchargement de "${song.title}"`);
 }
 
-/* ============ LECTEUR ============ */
+/* ============ LECTEUR — PAGE VIDÉO LYRICS ============ */
 function openPlayer(id) {
   const song = DATA.songs.find((s) => s.id === id);
   if (!song) return;
-  document.getElementById('playerCover').src = song.image;
-  document.getElementById('playerTitle').textContent = song.title;
-  document.getElementById('playerArtist').textContent = song.artist;
-  const audio = document.getElementById('playerAudio');
+
+  document.getElementById('lvTitle').textContent = song.title;
+  document.getElementById('lvArtist').textContent = song.artist;
+  document.getElementById('lyricsVideoBg').style.backgroundImage = `url('${song.lyricsBg || song.image}')`;
+
+  const audio = document.getElementById('lvAudio');
   audio.src = song.file;
   audio.onerror = () => showToast(`Fichier audio introuvable : ${song.file} — vérifiez qu'il a bien été mis en ligne`);
-  renderLyrics(song, audio);
-  const dlBtn = document.getElementById('playerDownload');
-  dlBtn.innerHTML = `${ICON_DOWNLOAD} Télécharger`;
-  dlBtn.style.display = 'flex'; dlBtn.style.alignItems = 'center'; dlBtn.style.justifyContent = 'center'; dlBtn.style.gap = '8px';
+  audio.play().catch(() => {});
+  updatePlayIcon(true);
+
+  renderLvLyrics(song, audio);
+
+  const dlBtn = document.getElementById('lvDownloadBtn');
+  dlBtn.innerHTML = ICON_DOWNLOAD;
   dlBtn.onclick = () => downloadSong(id);
-  const likeBtn = document.getElementById('playerLike');
+
+  const likeBtn = document.getElementById('lvLikeBtn');
   likeBtn.innerHTML = ICON_HEART;
   likeBtn.classList.toggle('liked', likedSongs.has(id));
   likeBtn.onclick = () => toggleLike(id, likeBtn);
-  document.getElementById('playerSheet').classList.add('open');
-  document.getElementById('playerSheet').setAttribute('aria-hidden', 'false');
+
+  document.getElementById('lvShareBtn').innerHTML = ICON_SHARE;
+  document.getElementById('lvShareBtn').onclick = () => shareSong(id);
+
+  const playBtn = document.getElementById('lvPlayBtn');
+  playBtn.onclick = () => {
+    if (audio.paused) { audio.play().catch(() => {}); } else { audio.pause(); }
+  };
+  audio.onplay = () => updatePlayIcon(true);
+  audio.onpause = () => updatePlayIcon(false);
+
+  const seek = document.getElementById('lvSeek');
+  audio.onloadedmetadata = () => {
+    seek.max = audio.duration || 0;
+    document.getElementById('lvTimeTotal').textContent = formatTime(audio.duration) || '0:00';
+  };
+  seek.oninput = () => { audio.currentTime = Number(seek.value); };
+  audio.ontimeupdate = () => {
+    seek.value = audio.currentTime;
+    document.getElementById('lvTimeCurrent').textContent = formatTime(audio.currentTime) || '0:00';
+    updateLvActiveLine(song, audio);
+  };
+
+  document.getElementById('lyricsVideo').classList.add('open');
+  document.getElementById('lyricsVideo').setAttribute('aria-hidden', 'false');
 }
 
-function renderLyrics(song, audio) {
-  const box = document.getElementById('playerLyrics');
-  audio.ontimeupdate = null;
+function updatePlayIcon(playing) {
+  document.getElementById('lvPlayBtn').innerHTML = playing ? ICON_PAUSE : ICON_PLAY_BIG;
+}
+
+function renderLvLyrics(song, audio) {
+  const box = document.getElementById('lvLyrics');
   if (!song.lyrics || song.lyrics.length === 0) {
-    box.innerHTML = '<p class="lyrics-empty">Paroles bientôt disponibles.<br>Envoyez-moi le texte pour activer l\'affichage synchronisé.</p>';
+    box.innerHTML = '<p class="lv-line lv-empty">Paroles bientôt disponibles.</p>';
     return;
   }
-  box.innerHTML = song.lyrics.map((line, i) => `<p class="lyric-line" data-i="${i}">${escapeHtml(line.text)}</p>`).join('');
-  audio.ontimeupdate = () => {
-    const t = audio.currentTime;
-    let active = 0;
-    song.lyrics.forEach((line, i) => { if (t >= line.t) active = i; });
-    box.querySelectorAll('.lyric-line').forEach((el, i) => el.classList.toggle('active', i === active));
-    const activeEl = box.querySelector('.lyric-line.active');
-    if (activeEl) activeEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
-  };
+  box.innerHTML = song.lyrics.map((line, i) => `<p class="lv-line" data-i="${i}">${escapeHtml(line.text)}</p>`).join('');
 }
 
-document.getElementById('playerClose').addEventListener('click', closePlayer);
+function updateLvActiveLine(song, audio) {
+  if (!song.lyrics || song.lyrics.length === 0) return;
+  const box = document.getElementById('lvLyrics');
+  const t = audio.currentTime;
+  let active = 0;
+  song.lyrics.forEach((line, i) => { if (t >= line.t) active = i; });
+  box.querySelectorAll('.lv-line').forEach((el, i) => el.classList.toggle('active', i === active));
+  const activeEl = box.querySelector('.lv-line.active');
+  if (activeEl) activeEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+
+document.getElementById('lvCloseBtn').addEventListener('click', closePlayer);
 function closePlayer() {
-  const audio = document.getElementById('playerAudio');
+  const audio = document.getElementById('lvAudio');
   audio.pause();
-  document.getElementById('playerSheet').classList.remove('open');
-  document.getElementById('playerSheet').setAttribute('aria-hidden', 'true');
+  document.getElementById('lyricsVideo').classList.remove('open');
+  document.getElementById('lyricsVideo').setAttribute('aria-hidden', 'true');
 }
 
 /* ============ CRÉDITS ============ */

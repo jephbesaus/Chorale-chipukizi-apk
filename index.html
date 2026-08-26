@@ -87,20 +87,38 @@
     <div class="song-list" id="songList"></div>
   </section>
 
-  <!-- Lecteur / Paroles overlay -->
-  <div class="player-sheet" id="playerSheet" aria-hidden="true">
-    <div class="player-sheet-inner">
-      <button class="sheet-close" id="playerClose" aria-label="Fermer">✕</button>
-      <img class="player-cover" id="playerCover" alt="">
-      <h3 id="playerTitle"></h3>
-      <p class="player-artist" id="playerArtist"></p>
-      <audio id="playerAudio" controls style="width:100%"></audio>
-      <div class="lyrics-box" id="playerLyrics"></div>
-      <div class="player-actions">
-        <button class="icon-btn icon-btn--ghost" id="playerLike" aria-label="Aimer"></button>
-        <button class="btn-secondary" id="playerDownload" style="flex:1"></button>
+  <!-- ===== PAGE VIDÉO LYRICS (plein écran) ===== -->
+  <div class="lyrics-video" id="lyricsVideo" aria-hidden="true">
+    <div class="lyrics-video-bg" id="lyricsVideoBg"></div>
+    <div class="lyrics-video-scrim"></div>
+
+    <div class="lv-top">
+      <button class="lv-close" id="lvCloseBtn" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="lv-titleblock">
+        <p class="lv-title" id="lvTitle"></p>
+        <p class="lv-artist" id="lvArtist"></p>
+      </div>
+      <button class="icon-btn icon-btn--ghost" id="lvLikeBtn" aria-label="Aimer">${''}</button>
+    </div>
+
+    <div class="lv-lyrics" id="lvLyrics"></div>
+
+    <div class="lv-bottom">
+      <div class="lv-progress-row">
+        <span class="lv-time" id="lvTimeCurrent">0:00</span>
+        <input type="range" id="lvSeek" min="0" max="100" value="0" step="0.1" class="lv-seek">
+        <span class="lv-time" id="lvTimeTotal">0:00</span>
+      </div>
+      <div class="lv-controls">
+        <button class="icon-btn icon-btn--ghost" id="lvDownloadBtn" aria-label="Télécharger"></button>
+        <button class="lv-play-btn" id="lvPlayBtn" aria-label="Lecture / Pause"></button>
+        <button class="icon-btn icon-btn--ghost" id="lvShareBtn" aria-label="Partager"></button>
       </div>
     </div>
+
+    <audio id="lvAudio"></audio>
   </div>
 
   <!-- ===== PAGE STUDIO ===== -->
