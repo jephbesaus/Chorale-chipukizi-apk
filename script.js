@@ -22,71 +22,125 @@ const EMBEDDED_DATA = {
       heroImage: 'discover-purple.jpg', cardColor: 'card-purple', heroCaption: 'One voice, one heart, one purpose.',
       lyricsBg: 'bg-clef-red.jpg',
       lyrics: [
-        { t: 0, text: '♪ Instrumental ♪' },
-        { t: 12, text: '♪ Instrumental ♪' },
-        { t: 24.0, text: 'Kuna mahali nimetoka,' },
-        { t: 28.6, text: 'Pia mahali ninakwenda,' },
-        { t: 33.4, text: 'Mkono wako siponiongoza,' },
-        { t: 38.7, text: 'Sitaweza.' },
-        { t: 41.4, text: 'Maana naona mji karibu,' },
-        { t: 46.4, text: 'Mateso nayo yapata,' },
-        { t: 50.6, text: 'Huko mbele sita ya ona,' },
-        { t: 55.6, text: 'Nitashinda.' },
-        { t: 58.3, text: 'Nivike nguvu,' },
-        { t: 61.1, text: 'Bwana yesu, nionyeshe ishara,' },
-        { t: 67.5, text: 'Uniongoze. Eh Mfalme,' },
-        { t: 72.1, text: 'Mwendo nimalize.' },
-        { t: 75.6, text: 'Kuna mahali nilipotoka,' },
-        { t: 80.7, text: 'Pia mahali ninakwenda,' },
-        { t: 85.5, text: 'Mkono wako siponiongoza Bwana,' },
-        { t: 92.1, text: 'Sitaweza.' },
-        { t: 94.7, text: 'Maana naona mji karibu,' },
-        { t: 99.8, text: 'Na mateso yote nayo yapata,' },
-        { t: 105.7, text: 'Huko mbele,' },
-        { t: 108.4, text: 'Nitashinda.' },
-        { t: 111.0, text: 'Kuna mahali nilipotoka,' },
-        { t: 116.1, text: 'Pia mahali ninakwenda,' },
-        { t: 120.9, text: 'Mkono wako Bwana,' },
-        { t: 124.6, text: 'Sitaweza.' },
-        { t: 127.3, text: 'Maana naona mji karibu,' },
-        { t: 132.3, text: 'Mateso nayo yapata,' },
-        { t: 136.5, text: 'Huko mbele sitaiona,' },
-        { t: 140.9, text: 'Nitashinda.' },
-        { t: 143.5, text: 'Nivike nguvu zako Bwana,' },
-        { t: 148.8, text: 'Nionyeshe, nionyeshe ishara' },
-        { t: 154.7, text: 'Kisha uniongoze Mfalme wa mbingu na dunia,' },
-        { t: 164.0, text: 'Uni ongoze, Mwendo nimalize.' },
-        { t: 170.1, text: 'Tuko mbele zako Eh roho wa Mungu Muumbaji,' },
-        { t: 179.3, text: 'Twa taka kuongozwa nawe' },
-        { t: 184.4, text: 'Endelea kuziongoza hatua zetu mbele ili tuserudi nyuma tui fikie malengo yetu.' },
-        { t: 201.5, text: 'Maana tukiwa na mwanga wako, tutayafanya mapenzi yako duniani kwa kupendeza,' },
-        { t: 218.2, text: 'Na vita vyote tutalishinda kupitia wewe Jehova Sabaoth. Haleluya!' },
-        { t: 232.5, text: 'Bila wewe, siwezi lolote.' },
-        { t: 238.0, text: 'Ebenezer Mungu msaada wetu, Haleluya.' },
-        { t: 246.1, text: 'Ebenezer mungu wangu' },
-        { t: 250.5, text: 'Nikiwa na wewe, sita ofu lolote, Bwana.' },
-        { t: 259.1, text: 'Paza sauti tena tuimbe pamoja :' },
-        { t: 265.9, text: 'Nikiwa na wewe, sitaogopa lolote, eh Bwana. Haleluya !' },
-        { t: 277.8, text: 'Nisirudiye nyuma,' },
-        { t: 281.5, text: 'Bwana niwezeshe,' },
-        { t: 285.0, text: 'Nisitazame tu na maneno yao.' },
-        { t: 291.2, text: 'Nisirudiye nyuma,' },
-        { t: 294.9, text: 'Bwana niwezeshe,' },
-        { t: 298.4, text: 'Nisitazame watu na maneno yao.' },
-        { t: 305.0, text: 'Nisirudi nyuma,' },
-        { t: 308.3, text: 'Bwana niwezeshe,' },
-        { t: 311.8, text: 'Nisitazame watu na maneno yao.' },
-        { t: 318.4, text: 'Nisirudiye nyuma,' },
-        { t: 322.2, text: 'Bwana niwezeshe Bwana,' },
-        { t: 327.0, text: 'Nisitazame watu na maneno yao.' },
-        { t: 333.6, text: 'Nijue kwamba, Ni wewe Bwana,' },
-        { t: 339.7, text: 'Utanilinda kufanya kazi yako Bwana,' },
-        { t: 347.4, text: 'Milele yote, milele yote.' },
-        { t: 352.9, text: 'Nijue Yakwamba Bwana, Ni wewe Bwana,' },
-        { t: 360.8, text: 'Ni wewe uliye ni ita' },
-        { t: 365.2, text: 'Utani vika nguvu, Milele yote.' },
-        { t: 371.8, text: 'Nisirudi nyuma...' },
-        { t: 375.6, text: 'Eh Mungu mwenye haki, peke yetu hatuwezi...' }
+          {
+    t: 24.0,
+    text: `Kuna mahali nimetoka,
+Pia mahali ninakwenda,
+Mkono wako siponiongoza,
+Sitaweza.
+
+Maana naona mji karibu,
+Mateso nayo yapata,
+Huko mbele sitaiona,
+Nitashinda.`
+  },
+
+  // ============================================================
+  //  COUPLET 1 – 2ème partie  (0:40 → 0:56)
+  // ============================================================
+  {
+    t: 40.0,
+    text: `Nivike nguvu,
+Bwana Yesu, nionyeshe ishara,
+Uniongoze. Eh Mfalme,
+Mwendo nimalize.`
+  },
+
+  // ============================================================
+  //  GRAND REFRAIN  (0:57 → 1:26)  → "Suit la logique"
+  // ============================================================
+  {
+    t: 57.0,
+    text: `Kuna mahali nilipotoka,
+Pia mahali ninakwenda,
+Mkono wako siponiongoza Bwana,
+Sitaweza.
+
+Maana naona mji karibu,
+Na mateso yote nayo yapata,
+Huko mbele,
+Nitashinda.
+
+Kuna mahali nilipotoka,
+Pia mahali ninakwenda,
+Mkono wako Bwana,
+Sitaweza.
+
+Maana naona mji karibu,
+Mateso nayo yapata,
+Huko mbele sitaiona,
+Nitashinda.
+
+Nivike nguvu zako Bwana,
+Nionyeshe, nionyeshe ishara,
+Kisha uniongoze Mfalme wa mbingu na dunia,
+Uniongoze,
+Mwendo nimalize.`
+  },
+
+  // ============================================================
+  //  SPOKEN WORD / PRIÈRE  (début : 2:50 → 4:26)
+  // ============================================================
+  {
+    t: 170.1,
+    text: `Tuko mbele zako Eh Roho wa Mungu Muumbaji,
+Twataka kuongozwa nawe.
+Endelea kuziongoza hatua zetu mbele ili tusirudi nyuma, tuifikie malengo yetu.
+Maana tukiwa na mwanga wako, tutayafanya mapenzi yako duniani kwa kupendeza,
+Na vita vyote tutalishinda kupitia wewe Jehova Sabaoth. Haleluya!`
+  },
+
+  // ============================================================
+  //  PONT  (début : 4:26)
+  // ============================================================
+  {
+    t: 232.5,
+    text: `Bila wewe, siwezi lolote.
+Ebenezer Mungu msaada wetu, Haleluya.
+Ebenezer Mungu wangu,
+Nikiwa na wewe, sitaogopa lolote, Bwana.
+Paza sauti tena tuimbe pamoja :
+Nikiwa na wewe, sitaogopa lolote, eh Bwana. Haleluya !`
+  },
+
+  // ============================================================
+  //  REFRAIN FINAL – "NISIRUDI NYUMA"  (début : 4:38)
+  // ============================================================
+  {
+    t: 277.8,
+    text: `Nisirudi nyuma,
+Bwana niwezeshe,
+Nisitazame tu na maneno yao.
+
+Nisirudi nyuma,
+Bwana niwezeshe,
+Nisitazame watu na maneno yao.
+
+Nisirudi nyuma,
+Bwana niwezeshe,
+Nisitazame watu na maneno yao.
+
+Nisirudi nyuma,
+Bwana niwezeshe Bwana,
+Nisitazame watu na maneno yao.
+
+Nijue kwamba, Ni wewe Bwana,
+Utanilinda kufanya kazi yako Bwana,
+Milele yote, milele yote.
+
+Nijue yakwamba Bwana, Ni wewe Bwana,
+Ni wewe uliye niita,
+Utaniweka nguvu, Milele yote.
+Nisirudi nyuma...`
+  },
+
+  // ============================================================
+  //  OUTRO – PRIÈRE FINALE  (début : 6:15)
+  // ============================================================
+  {
+    t: 375.6,
+    text: `Eh Mungu mwenye haki, peke yetu hatuwezi...`
+  }
       ]
     },
     {
