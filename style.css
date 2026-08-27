@@ -299,7 +299,7 @@ a { color: var(--gold); }
 }
 .lv-line {
   margin: 0; font-size: 17px; font-weight: 600; line-height: 1.5;
-  color: rgba(255,255,255,0.4); transition: color .3s, transform .3s, font-size .3s;
+  color: rgba(255,255,255,0.4); transition: color .12s, transform .12s, font-size .12s;
 }
 .lv-line.active { color: #fff; font-size: 22px; font-weight: 800; transform: scale(1.03); }
 .lv-empty { color: rgba(255,255,255,0.6); font-size: 15px; font-weight: 500; }
