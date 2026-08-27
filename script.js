@@ -22,7 +22,15 @@ const EMBEDDED_DATA = {
       heroImage: 'discover-purple.jpg', cardColor: 'card-purple', heroCaption: 'One voice, one heart, one purpose.',
       lyricsBg: 'bg-clef-red.jpg',
       lyrics: [
-          {
+ // ============================================================
+  //  INTRO INSTRUMENTALE  (0:00 → 0:24)  → UN SEUL BLOC
+  // ============================================================
+  { t: 0, text: '♪ Instrumental ♪' },
+
+  // ============================================================
+  //  COUPLET 1 – 1ère partie  (0:24 → 0:40)
+  // ============================================================
+  {
     t: 24.0,
     text: `Kuna mahali nimetoka,
 Pia mahali ninakwenda,
@@ -79,7 +87,7 @@ Mwendo nimalize.`
   },
 
   // ============================================================
-  //  SPOKEN WORD / PRIÈRE  (début : 2:50 → 4:26)
+  //  SPOKEN WORD / PRIÈRE  (2:50 → 4:26)
   // ============================================================
   {
     t: 170.1,
@@ -91,7 +99,7 @@ Na vita vyote tutalishinda kupitia wewe Jehova Sabaoth. Haleluya!`
   },
 
   // ============================================================
-  //  PONT  (début : 4:26)
+  //  PONT  (4:26 → 4:38)
   // ============================================================
   {
     t: 232.5,
@@ -104,7 +112,7 @@ Nikiwa na wewe, sitaogopa lolote, eh Bwana. Haleluya !`
   },
 
   // ============================================================
-  //  REFRAIN FINAL – "NISIRUDI NYUMA"  (début : 4:38)
+  //  REFRAIN FINAL — « NISIRUDI NYUMA »  (4:38 → 5:27)
   // ============================================================
   {
     t: 277.8,
@@ -122,20 +130,33 @@ Nisitazame watu na maneno yao.
 
 Nisirudi nyuma,
 Bwana niwezeshe Bwana,
-Nisitazame watu na maneno yao.
+Nisitazame watu na maneno yao.`
+  },
 
-Nijue kwamba, Ni wewe Bwana,
+  // ============================================================
+  //  DÉCLARATION FINALE  (5:33 → 6:05)
+  // ============================================================
+  {
+    t: 333.6,
+    text: `Nijue kwamba, Ni wewe Bwana,
 Utanilinda kufanya kazi yako Bwana,
 Milele yote, milele yote.
 
 Nijue yakwamba Bwana, Ni wewe Bwana,
 Ni wewe uliye niita,
-Utaniweka nguvu, Milele yote.
-Nisirudi nyuma...`
+Utaniweka nguvu, Milele yote.`
   },
 
   // ============================================================
-  //  OUTRO – PRIÈRE FINALE  (début : 6:15)
+  //  OUTRO  (6:11 → 6:15)
+  // ============================================================
+  {
+    t: 371.8,
+    text: `Nisirudi nyuma...`
+  },
+
+  // ============================================================
+  //  PRIÈRE PARLÉE DE FIN  (6:15 → 6:33)
   // ============================================================
   {
     t: 375.6,
