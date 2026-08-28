@@ -665,6 +665,7 @@ function openPlayer(id) {
   updatePlayIcon(true);
 
   renderLvLyrics(song, audio);
+  lvLastActive = -1;
 
   const dlBtn = document.getElementById('lvDownloadBtn');
   dlBtn.innerHTML = ICON_DOWNLOAD;
@@ -714,12 +715,15 @@ function renderLvLyrics(song, audio) {
   box.innerHTML = song.lyrics.map((line, i) => `<p class="lv-line" data-i="${i}">${escapeHtml(line.text)}</p>`).join('');
 }
 
+let lvLastActive = -1;
 function updateLvActiveLine(song, audio) {
   if (!song.lyrics || song.lyrics.length === 0) return;
   const box = document.getElementById('lvLyrics');
   const t = audio.currentTime;
   let active = 0;
   song.lyrics.forEach((line, i) => { if (t >= line.t) active = i; });
+  if (active === lvLastActive) return;
+  lvLastActive = active;
   box.querySelectorAll('.lv-line').forEach((el, i) => el.classList.toggle('active', i === active));
   const activeEl = box.querySelector('.lv-line.active');
   if (activeEl) activeEl.scrollIntoView({ block: 'center', behavior: 'smooth' });
