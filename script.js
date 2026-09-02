@@ -459,7 +459,6 @@ async function loadData() {
     `Bienvenue, <strong>${escapeHtml(DATA.user.name)}</strong>`;
   renderHome();
   renderSongList();
-  renderVideoSongSelect();
   updateCreditsUI();
   renderStudioProjects();
   loadDurations();
@@ -474,6 +473,7 @@ function navigateTo(pageId) {
     el.classList.toggle('active', isActive);
     if (el.classList.contains('menu-item')) el.setAttribute('aria-selected', isActive);
   });
+  if (pageId === 'reglages') renderSettings();
   window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
 }
 
@@ -742,9 +742,8 @@ function updateCreditsUI() {
   document.getElementById('creditsValue').textContent = credits;
   document.getElementById('creditsMax').textContent = MAX_CREDITS;
   document.getElementById('studioCredits').textContent = `${credits}/${MAX_CREDITS}`;
-  const exportBtn = document.getElementById('exportStudioBtn');
-  const genBtn = document.getElementById('generateVidBtn');
-  [exportBtn, genBtn].forEach((b) => { if (b) b.disabled = credits <= 0; });
+  const iaBtn = document.getElementById('iaAnalyzeBtn');
+  if (iaBtn) iaBtn.disabled = credits <= 0;
 }
 
 function useCredit() {
@@ -784,445 +783,115 @@ function initCinetPay(packageInfo) {
   console.log('initCinetPay appelé pour', packageInfo);
 }
 
-/* ============ STUDIO ============ */
-let studioAudioCtx = null;
-function getAudioCtx() {
-  if (!studioAudioCtx) studioAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return studioAudioCtx;
-}
-
-/* --- Écran d'entrée --- */
-document.getElementById('chooseDirect').addEventListener('click', () => enterWorkspace('record'));
-document.getElementById('chooseIA').addEventListener('click', () => enterWorkspace('ai'));
-document.getElementById('studioBackBtn').addEventListener('click', () => {
-  document.getElementById('studioWorkspace').classList.remove('active');
-  document.getElementById('studioIntro').classList.add('active');
-});
-function enterWorkspace(tab) {
-  document.getElementById('studioIntro').classList.remove('active');
-  document.getElementById('studioWorkspace').classList.add('active');
-  switchStudioTab(tab);
-}
-
-/* --- Sous-navigation --- */
-document.querySelectorAll('.subnav-item').forEach((btn) => {
-  btn.addEventListener('click', () => switchStudioTab(btn.dataset.tab));
-});
-function switchStudioTab(tab) {
-  document.querySelectorAll('.subnav-item').forEach((b) => b.classList.toggle('active', b.dataset.tab === tab));
-  document.querySelectorAll('.studio-tab').forEach((t) => t.classList.toggle('active', t.dataset.tab === tab));
-}
-
-/* --- Enregistrement direct --- */
-let mediaRecorder = null;
-let recordedChunks = [];
-let recStream = null;
-let recTimerInterval = null;
-let recSeconds = 0;
-let levelAnalyser = null;
-let levelRAF = null;
-let lastTakeBlob = null;
-let studioTracks = [];
-
-const levelMeter = document.getElementById('levelMeter');
-for (let i = 0; i < 20; i++) levelMeter.appendChild(document.createElement('span'));
-
-document.getElementById('recBtn').addEventListener('click', async () => {
-  const btn = document.getElementById('recBtn');
-  if (!mediaRecorder || mediaRecorder.state === 'inactive') {
-    try {
-      recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (err) {
-      showToast('Micro inaccessible — vérifiez les autorisations');
-      return;
-    }
-    mediaRecorder = new MediaRecorder(recStream);
-    recordedChunks = [];
-    mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
-    mediaRecorder.onstop = () => {
-      lastTakeBlob = new Blob(recordedChunks, { type: 'audio/webm' });
-      showTakeResult(lastTakeBlob);
-      recStream.getTracks().forEach((t) => t.stop());
-      stopLevelMeter();
-    };
-    mediaRecorder.start();
-    startLevelMeter(recStream);
-    btn.classList.add('recording');
-    document.getElementById('micVisual').classList.add('active');
-    document.getElementById('recPauseBtn').disabled = false;
-    document.getElementById('recStatus').textContent = 'Enregistrement en cours...';
-    document.getElementById('recResult').hidden = true;
-    recSeconds = 0;
-    recTimerInterval = setInterval(() => {
-      recSeconds++;
-      const m = String(Math.floor(recSeconds / 60)).padStart(2, '0');
-      const s = String(recSeconds % 60).padStart(2, '0');
-      document.getElementById('recTimer').textContent = `${m}:${s}`;
-    }, 1000);
-  } else {
-    mediaRecorder.stop();
-    btn.classList.remove('recording');
-    document.getElementById('micVisual').classList.remove('active');
-    document.getElementById('recPauseBtn').disabled = true;
-    clearInterval(recTimerInterval);
-    document.getElementById('recStatus').textContent = 'Enregistrement terminé';
-  }
-});
-
-document.getElementById('recPauseBtn').addEventListener('click', () => {
-  if (!mediaRecorder) return;
-  const btn = document.getElementById('recPauseBtn');
-  if (mediaRecorder.state === 'recording') {
-    mediaRecorder.pause();
-    clearInterval(recTimerInterval);
-    document.getElementById('micVisual').classList.remove('active');
-    document.getElementById('recStatus').textContent = 'En pause';
-    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>';
-  } else if (mediaRecorder.state === 'paused') {
-    mediaRecorder.resume();
-    document.getElementById('micVisual').classList.add('active');
-    document.getElementById('recStatus').textContent = 'Enregistrement en cours...';
-    recTimerInterval = setInterval(() => {
-      recSeconds++;
-      const m = String(Math.floor(recSeconds / 60)).padStart(2, '0');
-      const s = String(recSeconds % 60).padStart(2, '0');
-      document.getElementById('recTimer').textContent = `${m}:${s}`;
-    }, 1000);
-    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18"><rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/></svg>';
-  }
-});
-
-document.getElementById('recRedoBtn').addEventListener('click', resetRecording);
-document.getElementById('recRetryBtn').addEventListener('click', resetRecording);
-function resetRecording() {
-  document.getElementById('recResult').hidden = true;
-  document.getElementById('recTimer').textContent = '00:00';
-  document.getElementById('recStatus').textContent = 'Prêt à enregistrer';
-  document.getElementById('recRedoBtn').disabled = true;
-}
-
-function showTakeResult(blob) {
-  const url = URL.createObjectURL(blob);
-  document.getElementById('recResultAudio').src = url;
-  document.getElementById('recResult').hidden = false;
-  document.getElementById('recRedoBtn').disabled = false;
-}
-
-document.getElementById('recVolume').addEventListener('input', (e) => {
-  document.getElementById('recResultAudio').volume = e.target.value / 100;
-});
-
-document.getElementById('recSaveBtn').addEventListener('click', () => {
-  if (!lastTakeBlob) return;
-  studioTracks.push({ id: `track_${Date.now()}`, blob: lastTakeBlob, duration: recSeconds });
-  showToast('Prise enregistrée dans le projet ✔');
-  loadIntoEditor(lastTakeBlob);
-  switchStudioTab('editor');
-});
-
-function startLevelMeter(stream) {
-  const ctx = getAudioCtx();
-  const source = ctx.createMediaStreamSource(stream);
-  levelAnalyser = ctx.createAnalyser();
-  levelAnalyser.fftSize = 64;
-  source.connect(levelAnalyser);
-  const data = new Uint8Array(levelAnalyser.frequencyBinCount);
-  const bars = levelMeter.querySelectorAll('span');
-  const tick = () => {
-    levelAnalyser.getByteFrequencyData(data);
-    bars.forEach((bar, i) => {
-      const v = data[i % data.length] || 0;
-      bar.style.height = `${4 + (v / 255) * 30}px`;
-    });
-    levelRAF = requestAnimationFrame(tick);
-  };
-  tick();
-}
-function stopLevelMeter() {
-  if (levelRAF) cancelAnimationFrame(levelRAF);
-  levelMeter.querySelectorAll('span').forEach((bar) => { bar.style.height = '4px'; });
-}
-
-/* --- Éditeur audio --- */
-let editorBlob = null;
-let editorAudioBuffer = null;
-
-function loadIntoEditor(blob) {
-  editorBlob = blob;
-  const url = URL.createObjectURL(blob);
-  document.getElementById('editorAudio').src = url;
-  document.getElementById('editorHint').textContent = 'Sélectionnez un outil ci-dessous pour modifier votre piste.';
-  drawWaveformFromBlob(blob);
-}
-
-async function drawWaveformFromBlob(blob) {
-  try {
-    const arrayBuf = await blob.arrayBuffer();
-    const ctx = getAudioCtx();
-    editorAudioBuffer = await ctx.decodeAudioData(arrayBuf.slice(0));
-    const canvas = document.getElementById('waveformCanvas');
-    canvas.width = canvas.clientWidth * 2;
-    canvas.height = 90 * 2;
-    const c = canvas.getContext('2d');
-    c.clearRect(0, 0, canvas.width, canvas.height);
-    const raw = editorAudioBuffer.getChannelData(0);
-    const step = Math.ceil(raw.length / canvas.width);
-    const mid = canvas.height / 2;
-    c.strokeStyle = '#f7971e';
-    c.lineWidth = 2;
-    c.beginPath();
-    for (let i = 0; i < canvas.width; i++) {
-      let min = 1, max = -1;
-      for (let j = 0; j < step; j++) {
-        const v = raw[i * step + j] || 0;
-        if (v < min) min = v;
-        if (v > max) max = v;
-      }
-      c.moveTo(i, mid + min * mid * 0.9);
-      c.lineTo(i, mid + max * mid * 0.9);
-    }
-    c.stroke();
-  } catch (e) {
-    // Décodage impossible (format non supporté par le navigateur) — on garde juste le lecteur audio.
-  }
-}
-
-document.querySelectorAll('.editor-tool').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    if (!editorBlob) { showToast('Chargez ou enregistrez une piste d\'abord'); return; }
-    const labels = { split: 'Piste divisée à la position de lecture', delete: 'Sélection supprimée', cut: 'Extrait découpé' };
-    showToast(`${labels[btn.dataset.tool]} (aperçu — édition fine à brancher sur un moteur audio serveur)`);
-  });
-});
-
-document.getElementById('cleanNoiseBtn').addEventListener('click', () => {
-  if (!editorBlob) { showToast('Chargez ou enregistrez une piste d\'abord'); return; }
-  showToast('Nettoyage IA en cours...');
-  setTimeout(() => showToast('Bruit de fond réduit ✔ (nécessite un service IA audio côté serveur)'), 1200);
-});
-
-document.getElementById('editorVolume').addEventListener('input', (e) => {
-  document.getElementById('editorAudio').volume = e.target.value / 100;
-});
-
-/* --- Rythmes --- */
+/* ============ STUDIO — MusicGPT ============ */
 const RHYTHMS = [
-  { id: 'afrobeat', label: 'Afrobeat', emoji: '🥁', bpm: 100 },
-  { id: 'gospel', label: 'Gospel', emoji: '🎶', bpm: 90 },
-  { id: 'hiphop', label: 'Hip-hop', emoji: '🎤', bpm: 85 },
-  { id: 'rnb', label: 'R&B', emoji: '🎷', bpm: 80 },
-  { id: 'pop', label: 'Pop', emoji: '✨', bpm: 110 },
-  { id: 'trap', label: 'Trap', emoji: '🔥', bpm: 140 },
-  { id: 'dance', label: 'Dance', emoji: '💃', bpm: 124 },
+  { id: 'afrobeat', label: 'Afrobeat' },
+  { id: 'gospel', label: 'Gospel' },
+  { id: 'hiphop', label: 'Hip-hop' },
+  { id: 'rnb', label: 'R&B' },
+  { id: 'pop', label: 'Pop' },
+  { id: 'trap', label: 'Trap' },
+  { id: 'dance', label: 'Dance' },
 ];
-let selectedRhythm = null;
-let rhythmInterval = null;
 
-function renderRhythmGrid() {
-  const grid = document.getElementById('rhythmGrid');
-  grid.innerHTML = RHYTHMS.map((r) => `
-    <button class="chip-tile" data-id="${r.id}">
-      <span class="chip-emoji">${r.emoji}</span>${r.label}
-    </button>
-  `).join('');
-  grid.querySelectorAll('.chip-tile').forEach((tile) => {
-    tile.addEventListener('click', () => {
-      const rhythm = RHYTHMS.find((r) => r.id === tile.dataset.id);
-      grid.querySelectorAll('.chip-tile').forEach((t) => t.classList.remove('selected'));
-      tile.classList.add('selected');
-      selectedRhythm = rhythm;
-      playRhythmPreview(rhythm);
-      showToast(`Rythme "${rhythm.label}" ajouté au projet`);
-    });
-  });
+function renderIaStyleSelect() {
+  const select = document.getElementById('iaStyleSelect');
+  if (!select) return;
+  select.innerHTML = RHYTHMS.map((r) => `<option value="${escapeHtml(r.label)}">${escapeHtml(r.label)}</option>`).join('');
 }
-renderRhythmGrid();
+renderIaStyleSelect();
 
-function playRhythmPreview(rhythm) {
-  clearInterval(rhythmInterval);
-  const ctx = getAudioCtx();
-  const beatMs = 60000 / rhythm.bpm;
-  let beat = 0;
-  const playClick = (accent) => {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.frequency.value = accent ? 1400 : 800;
-    osc.connect(gain); gain.connect(ctx.destination);
-    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-    osc.start(); osc.stop(ctx.currentTime + 0.08);
-  };
-  playClick(true);
-  rhythmInterval = setInterval(() => { playClick(beat % 4 === 0); beat++; }, beatMs);
-  setTimeout(() => clearInterval(rhythmInterval), beatMs * 8);
-}
+document.getElementById('iaAnalyzeBtn').addEventListener('click', generateWithMusicGPT);
 
-document.getElementById('aiSuggestRhythmBtn').addEventListener('click', () => {
-  const suggestion = RHYTHMS[Math.floor(Math.random() * RHYTHMS.length)];
-  document.getElementById('rhythmSuggestion').textContent = `✨ L'IA recommande : ${suggestion.label} (${suggestion.bpm} BPM) — d'après le style vocal détecté`;
-});
-
-/* --- Instruments --- */
-const INSTRUMENTS = [
-  { id: 'drums', label: 'Drums', emoji: '🥁', freq: 90, type: 'drum' },
-  { id: 'piano', label: 'Piano', emoji: '🎹', freq: 523, type: 'tone' },
-  { id: 'guitare', label: 'Guitare', emoji: '🎸', freq: 330, type: 'tone' },
-  { id: 'flute', label: 'Flûte', emoji: '🪈', freq: 880, type: 'tone' },
-  { id: 'bass', label: 'Bass', emoji: '🎵', freq: 110, type: 'tone' },
-  { id: 'clavier', label: 'Clavier', emoji: '🎹', freq: 660, type: 'tone' },
-  { id: 'percussions', label: 'Percussions', emoji: '🥁', freq: 200, type: 'drum' },
-  { id: 'autres', label: 'Autres', emoji: '🎺', freq: 440, type: 'tone' },
-];
-const addedInstruments = new Set();
-
-function renderInstrumentGrid() {
-  const grid = document.getElementById('instrumentGrid');
-  grid.innerHTML = INSTRUMENTS.map((i) => `
-    <button class="chip-tile" data-id="${i.id}">
-      <span class="chip-emoji">${i.emoji}</span>${i.label}
-    </button>
-  `).join('');
-  grid.querySelectorAll('.chip-tile').forEach((tile) => {
-    tile.addEventListener('click', () => {
-      const inst = INSTRUMENTS.find((i) => i.id === tile.dataset.id);
-      playInstrumentPreview(inst);
-      tile.classList.toggle('selected');
-      if (addedInstruments.has(inst.id)) addedInstruments.delete(inst.id);
-      else addedInstruments.add(inst.id);
-      renderAddedInstruments();
-    });
-  });
-}
-renderInstrumentGrid();
-
-function playInstrumentPreview(inst) {
-  const ctx = getAudioCtx();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = inst.type === 'drum' ? 'square' : 'sine';
-  osc.frequency.value = inst.freq;
-  osc.connect(gain); gain.connect(ctx.destination);
-  gain.gain.setValueAtTime(0.2, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + (inst.type === 'drum' ? 0.15 : 0.5));
-  osc.start(); osc.stop(ctx.currentTime + (inst.type === 'drum' ? 0.15 : 0.5));
-}
-
-function renderAddedInstruments() {
-  const box = document.getElementById('addedInstruments');
-  if (addedInstruments.size === 0) { box.innerHTML = '<span class="empty-state">aucun</span>'; return; }
-  box.innerHTML = [...addedInstruments].map((id) => {
-    const inst = INSTRUMENTS.find((i) => i.id === id);
-    return `<span class="pill-tag">${inst.emoji} ${inst.label}</span>`;
-  }).join('');
-}
-
-/* --- Assistant IA (projet en cours) --- */
-document.getElementById('aiAnalyzeBtn').addEventListener('click', () => {
-  if (!editorBlob && studioTracks.length === 0) {
-    showToast('Enregistrez d\'abord une prise pour que l\'IA puisse l\'analyser');
-    return;
-  }
-  runAiAnalysis('aiResult', document.getElementById('aiAnalyzeBtn'));
-});
-
-function runAiAnalysis(resultId, btn) {
-  btn.disabled = true;
-  btn.textContent = 'Analyse en cours...';
-  const resultBox = document.getElementById(resultId);
-  resultBox.hidden = true;
-  setTimeout(() => {
-    const tempo = 80 + Math.floor(Math.random() * 50);
-    const keys = ['Do majeur', 'Sol majeur', 'Ré mineur', 'Fa majeur', 'La mineur'];
-    const styles = ['Gospel', 'Afro Gospel', 'Louange contemporaine', 'Gospel/Pop'];
-    const rhythm = RHYTHMS[Math.floor(Math.random() * RHYTHMS.length)];
-    const key = keys[Math.floor(Math.random() * keys.length)];
-    const style = styles[Math.floor(Math.random() * styles.length)];
-    resultBox.innerHTML = `
-      <div class="ai-result-row"><span>Tempo estimé</span><span>${tempo} BPM</span></div>
-      <div class="ai-result-row"><span>Tonalité approximative</span><span>${key}</span></div>
-      <div class="ai-result-row"><span>Style détecté</span><span>${style}</span></div>
-      <div class="ai-result-row"><span>Rythme recommandé</span><span>${rhythm.label}</span></div>
-      <div class="ai-result-row"><span>Instruments suggérés</span><span>Piano, Drums, Bass</span></div>
-    `;
-    resultBox.hidden = false;
-    btn.disabled = false;
-    btn.textContent = 'Analyser mon projet';
-    showToast('Analyse IA terminée (résultats indicatifs — à connecter à un vrai service audio-IA)');
-  }, 1500);
-}
-
-/* --- Studio IA (idée → chanson) --- */
-let iaMediaRecorder = null;
-let iaChunks = [];
-let iaStream = null;
-let iaTimerInterval = null;
-let iaSeconds = 0;
-let iaBlob = null;
-
-document.getElementById('iaRecBtn').addEventListener('click', async () => {
-  const btn = document.getElementById('iaRecBtn');
-  if (!iaMediaRecorder || iaMediaRecorder.state === 'inactive') {
-    try {
-      iaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (err) {
-      showToast('Micro inaccessible — vérifiez les autorisations');
-      return;
-    }
-    iaMediaRecorder = new MediaRecorder(iaStream);
-    iaChunks = [];
-    iaMediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) iaChunks.push(e.data); };
-    iaMediaRecorder.onstop = () => {
-      iaBlob = new Blob(iaChunks, { type: 'audio/webm' });
-      const audioEl = document.getElementById('iaResultAudio');
-      audioEl.src = URL.createObjectURL(iaBlob);
-      audioEl.hidden = false;
-      document.getElementById('iaAnalyzeBtn').disabled = false;
-      iaStream.getTracks().forEach((t) => t.stop());
-    };
-    iaMediaRecorder.start();
-    btn.classList.add('recording');
-    iaSeconds = 0;
-    iaTimerInterval = setInterval(() => {
-      iaSeconds++;
-      const m = String(Math.floor(iaSeconds / 60)).padStart(2, '0');
-      const s = String(iaSeconds % 60).padStart(2, '0');
-      document.getElementById('iaRecTimer').textContent = `${m}:${s}`;
-    }, 1000);
-  } else {
-    iaMediaRecorder.stop();
-    btn.classList.remove('recording');
-    clearInterval(iaTimerInterval);
-  }
-});
-
-document.getElementById('iaAnalyzeBtn').addEventListener('click', () => {
-  runAiAnalysis('iaResult', document.getElementById('iaAnalyzeBtn'));
-  document.getElementById('iaIntroMsg').textContent = 'Proposition de titre : "Espoir Nouveau" — modifiable ci-dessous.';
-});
-
-/* --- Export & Projets --- */
-document.getElementById('exportStudioBtn').addEventListener('click', () => {
-  if (!editorBlob && !iaBlob && studioTracks.length === 0) {
-    showToast('Enregistrez au moins une prise avant d\'exporter');
+async function generateWithMusicGPT() {
+  const promptEl = document.getElementById('iaPrompt');
+  const prompt = promptEl.value.trim();
+  if (!prompt) {
+    showToast('Décrivez la chanson que vous voulez avant de générer');
+    promptEl.focus();
     return;
   }
   if (!useCredit()) return;
-  const title = `Mon chant ${(DATA.user.projects || []).length + 1}`;
-  const proj = {
-    id: `proj_${Date.now()}`,
-    title,
-    type: 'studio',
-    date: new Date().toISOString().slice(0, 10),
-    duration: formatTime(recSeconds || iaSeconds) || '--',
-    instruments: [...addedInstruments],
-    rhythm: selectedRhythm ? selectedRhythm.label : null,
-  };
-  DATA.user.projects = DATA.user.projects || [];
-  DATA.user.projects.push(proj);
-  renderStudioProjects();
-  switchStudioTab('projects');
-  showToast(`Projet "${title}" exporté ✔`);
-});
+
+  const style = document.getElementById('iaStyleSelect').value;
+  const btn = document.getElementById('iaAnalyzeBtn');
+  const statusEl = document.getElementById('iaGenStatus');
+  const resultBox = document.getElementById('iaResult');
+  resultBox.hidden = true;
+  btn.disabled = true;
+  statusEl.textContent = 'Envoi de la demande à MusicGPT...';
+
+  try {
+    const genRes = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, music_style: style }),
+    });
+    const genData = await genRes.json();
+    if (!genRes.ok || !genData.task_id) {
+      throw new Error(genData.error || 'Échec de la demande de génération');
+    }
+
+    statusEl.textContent = `Génération en cours (environ ${genData.eta || 60}s)...`;
+    const audioUrl = await pollMusicGptStatus(genData.task_id, statusEl);
+
+    statusEl.textContent = 'Chanson générée';
+    resultBox.hidden = false;
+    resultBox.innerHTML = `
+      <audio controls style="width:100%; margin-bottom:10px;" src="${audioUrl}"></audio>
+      <a class="btn-secondary" style="display:block; text-align:center; text-decoration:none;" href="${audioUrl}" download="chanson-ia.mp3">Télécharger</a>
+    `;
+
+    DATA.user.projects = DATA.user.projects || [];
+    DATA.user.projects.push({
+      id: `proj_${Date.now()}`,
+      title: prompt.slice(0, 40),
+      type: 'studio-ia',
+      date: new Date().toISOString().slice(0, 10),
+      duration: '--',
+      audioUrl,
+    });
+    renderStudioProjects();
+  } catch (err) {
+    statusEl.textContent = '';
+    showToast(`Erreur MusicGPT : ${err.message}`);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function pollMusicGptStatus(taskId, statusEl) {
+  return new Promise((resolve, reject) => {
+    const maxAttempts = 60; // jusqu'à ~5 minutes (60 x 5s)
+    let attempts = 0;
+    const tick = async () => {
+      attempts++;
+      try {
+        const res = await fetch(`/api/status?task_id=${encodeURIComponent(taskId)}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Échec de la vérification du statut');
+
+        const status = (data.status || '').toUpperCase();
+        if (status === 'COMPLETED' || status === 'SUCCESS') {
+          if (!data.audio_url) throw new Error('Chanson prête mais URL audio manquante');
+          resolve(data.audio_url);
+          return;
+        }
+        if (status === 'FAILED' || status === 'ERROR') {
+          throw new Error('MusicGPT a signalé un échec de génération');
+        }
+        if (attempts >= maxAttempts) {
+          throw new Error('Délai dépassé — réessayez dans quelques minutes');
+        }
+        statusEl.textContent = `Génération en cours... (${status || 'en attente'})`;
+        setTimeout(tick, 5000);
+      } catch (err) {
+        reject(err);
+      }
+    };
+    tick();
+  });
+}
 
 function renderStudioProjects() {
   if (!DATA) return;
@@ -1232,120 +901,35 @@ function renderStudioProjects() {
   list.innerHTML = projects.slice().reverse().map((p) => `
     <div class="project-card">
       <div>
-        <h4>🎵 ${escapeHtml(p.title)}</h4>
-        <span>${p.date} · ${p.duration || '--'}${p.rhythm ? ' · ' + escapeHtml(p.rhythm) : ''}</span>
+        <h4>${escapeHtml(p.title)}</h4>
+        <span>${p.date}${p.duration && p.duration !== '--' ? ' · ' + p.duration : ''}</span>
       </div>
     </div>
   `).join('');
-  list.querySelectorAll('.project-card').forEach((card) => {
-    card.addEventListener('click', () => showToast('Ouverture du projet — reprise du travail'));
+  list.querySelectorAll('.project-card').forEach((card, i) => {
+    const proj = projects.slice().reverse()[i];
+    card.addEventListener('click', () => {
+      if (proj.audioUrl) {
+        const audio = new Audio(proj.audioUrl);
+        audio.play().catch(() => {});
+        showToast(`Lecture : ${proj.title}`);
+      }
+    });
   });
-}
-
-/* ============ VIDÉOS ============ */
-function renderVideoSongSelect() {
-  const select = document.getElementById('vidSongSelect');
-  select.innerHTML = DATA.songs.map((s) => `<option value="${s.id}">${escapeHtml(s.title)}</option>`).join('');
-}
-
-
-let selectedPhotos = [];
-document.getElementById('vidPhotos').addEventListener('change', (e) => {
-  selectedPhotos = Array.from(e.target.files);
-  const preview = document.getElementById('photoPreview');
-  preview.innerHTML = '';
-  selectedPhotos.forEach((file) => {
-    const img = document.createElement('img');
-    img.src = URL.createObjectURL(file);
-    preview.appendChild(img);
-  });
-});
-
-document.getElementById('generateVidBtn').addEventListener('click', async () => {
-  const songId = Number(document.getElementById('vidSongSelect').value);
-  const song = DATA.songs.find((s) => s.id === songId);
-  const status = document.getElementById('genStatus');
-
-  if (!song) return;
-  if (selectedPhotos.length === 0) {
-    status.textContent = 'Ajoutez au moins une photo pour générer la vidéo';
-    return;
-  }
-  if (!useCredit()) return;
-
-  status.textContent = 'Synchronisation des paroles avec l\'audio...';
-  await generateLyricVideo(song, selectedPhotos, status);
-});
-
-async function generateLyricVideo(song, photos, statusEl) {
-  // Génère un aperçu simple avec Canvas : photo + première ligne des paroles.
-  // La synchronisation complète paroles/audio et l'export MediaRecorder
-  // s'appuient sur les mêmes API et seront affinés avec les vrais fichiers audio.
-  const canvas = document.createElement('canvas');
-  canvas.width = 540; canvas.height = 960;
-  const ctx = canvas.getContext('2d');
-
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  await new Promise((resolve) => {
-    img.onload = resolve;
-    img.onerror = resolve;
-    img.src = URL.createObjectURL(photos[0]);
-  });
-
-  if (img.width) {
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  } else {
-    ctx.fillStyle = '#12121a';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }
-  ctx.fillStyle = 'rgba(0,0,0,0.35)';
-  ctx.fillRect(0, canvas.height - 220, canvas.width, 220);
-  ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 30px sans-serif';
-  ctx.textAlign = 'center';
-  const firstLine = (song.lyrics || '').split('\n')[0] || song.title;
-  wrapText(ctx, firstLine, canvas.width / 2, canvas.height - 140, 460, 38);
-
-  statusEl.textContent = 'Vidéo générée ✔';
-  addVideoCard(canvas.toDataURL('image/jpeg', 0.85), song.title);
-
-  DATA.user.exports = DATA.user.exports || [];
-  DATA.user.exports.push({ id: `exp_${Date.now()}`, title: song.title, type: 'video', date: new Date().toISOString().slice(0, 10) });
-}
-
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = text.split(' ');
-  let line = '';
-  let lines = [];
-  words.forEach((w) => {
-    const test = line + w + ' ';
-    if (ctx.measureText(test).width > maxWidth && line) {
-      lines.push(line);
-      line = w + ' ';
-    } else {
-      line = test;
-    }
-  });
-  lines.push(line);
-  const startY = y - ((lines.length - 1) * lineHeight) / 2;
-  lines.forEach((l, i) => ctx.fillText(l.trim(), x, startY + i * lineHeight));
-}
-
-function addVideoCard(thumbDataUrl, title) {
-  const grid = document.getElementById('videoGrid');
-  const emptyState = grid.querySelector('.empty-state');
-  if (emptyState) emptyState.remove();
-  const card = document.createElement('div');
-  card.className = 'video-card';
-  card.innerHTML = `<img class="video-thumb" src="${thumbDataUrl}" alt=""><p>${escapeHtml(title)}</p>`;
-  grid.prepend(card);
 }
 
 /* ============ RÉGLAGES ============ */
-document.querySelectorAll('.settings-item').forEach((item) => {
-  item.addEventListener('click', () => {
-    showToast(`Section « ${item.textContent.trim()} » — à configurer`);
+function renderSettings() {
+  if (!DATA) return;
+  document.getElementById('settingsUserName').textContent = DATA.user.name;
+  document.getElementById('settingsCredits').textContent = `${credits}/${MAX_CREDITS}`;
+  document.getElementById('settingsLikedCount').textContent = likedSongs.size;
+  document.getElementById('settingsSongsCount').textContent = DATA.songs.length;
+  document.getElementById('settingsProjectsCount').textContent = (DATA.user.projects || []).length;
+}
+document.querySelectorAll('.settings-row--toggle input[type=checkbox]').forEach((input) => {
+  input.addEventListener('change', () => {
+    showToast(input.checked ? 'Notification activée' : 'Notification désactivée');
   });
 });
 

@@ -123,139 +123,30 @@
 
   <!-- ===== PAGE STUDIO ===== -->
   <section class="page" id="page-studio">
-
-    <!-- --- ÉCRAN D'ENTRÉE --- -->
-    <div class="studio-view active" id="studioIntro">
-      <div class="studio-intro-card">
-        <img class="studio-logo-img studio-logo-img--lg" src="logo-chipukizi.png" alt="Logo Chorale Chipukizi">
-        <h1>Studio</h1>
-        <p class="studio-welcome">Bienvenue dans le Studio Chorale Chipukizi 🎙️</p>
-        <p class="credits-line">Crédits disponibles : <strong id="studioCredits">5/5</strong></p>
-        <div class="studio-choice-grid">
-          <button class="choice-card" id="chooseDirect">
-            <span class="choice-icon">🎙️</span>
-            <h3>Enregistrement direct</h3>
-            <p>Chantez ou parlez directement dans l'application</p>
-          </button>
-          <button class="choice-card" id="chooseIA">
-            <span class="choice-icon">🤖</span>
-            <h3>Laisser l'IA travailler</h3>
-            <p>Enregistrez une idée, l'IA vous aide à construire le morceau</p>
-          </button>
-        </div>
-      </div>
+    <div class="studio-intro-card">
+      <img class="studio-logo-img studio-logo-img--lg" src="logo-chipukizi.png" alt="Logo Chorale Chipukizi">
+      <h1>Studio</h1>
+      <p class="studio-welcome">Décrivez votre chanson, l'IA la compose pour vous.</p>
+      <p class="credits-line">Crédits disponibles : <strong id="studioCredits">5/5</strong></p>
     </div>
 
-    <!-- --- ESPACE DE TRAVAIL --- -->
-    <div class="studio-view" id="studioWorkspace">
-      <button class="studio-back" id="studioBackBtn">← Studio</button>
+    <div class="ai-card">
+      <label class="field-label">Décrivez la chanson que vous voulez</label>
+      <textarea id="iaPrompt" rows="3" placeholder="Ex. Chant gospel joyeux de louange, voix chorale puissante, tempo modéré, avec piano et batterie" style="width:100%; background:var(--card-hi); border:1px solid rgba(255,255,255,0.1); color:#fff; border-radius:10px; padding:12px; font-size:14px; font-family:inherit; resize:vertical;"></textarea>
 
-      <div class="studio-subnav" id="studioSubnav">
-        <button class="subnav-item active" data-tab="record">🎙️ Enregistrement</button>
-        <button class="subnav-item" data-tab="editor">🎚️ Éditeur</button>
-        <button class="subnav-item" data-tab="rhythms">🥁 Rythmes</button>
-        <button class="subnav-item" data-tab="instruments">🎹 Instruments</button>
-        <button class="subnav-item" data-tab="ai">✨ IA</button>
-        <button class="subnav-item" data-tab="projects">💾 Mes projets</button>
-      </div>
+      <label class="field-label">Style musical</label>
+      <select id="iaStyleSelect"></select>
 
-      <!-- Onglet : Enregistrement -->
-      <div class="studio-tab active" data-tab="record">
-        <div class="mic-visual-wrap">
-          <div class="mic-visual" id="micVisual">
-            <span class="mic-ring mic-ring--1"></span>
-            <span class="mic-ring mic-ring--2"></span>
-            <svg viewBox="0 0 24 24" width="30" height="30" class="mic-icon"><path fill="currentColor" d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path fill="none" stroke="currentColor" stroke-width="2" d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
-          </div>
-        </div>
-        <div class="level-meter" id="levelMeter"></div>
-        <div class="rec-controls-row">
-          <button class="rec-side-btn" id="recRedoBtn" title="Recommencer" disabled>
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 1 3 6.7"/><path d="M3 21v-6h6"/></svg>
-          </button>
-          <button class="rec-btn" id="recBtn" aria-label="Démarrer l'enregistrement">
-            <span class="rec-dot"></span>
-          </button>
-          <button class="rec-side-btn" id="recPauseBtn" title="Pause" disabled>
-            <svg viewBox="0 0 24 24" width="18" height="18"><rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/></svg>
-          </button>
-        </div>
-        <span class="rec-timer" id="recTimer">00:00</span>
-        <p class="rec-status" id="recStatus">Prêt à enregistrer</p>
+      <button class="btn-primary" id="iaAnalyzeBtn">Générer avec MusicGPT (1 crédit)</button>
+      <p class="gen-status" id="iaGenStatus"></p>
+      <div class="ai-result" id="iaResult" hidden></div>
+    </div>
 
-        <div class="rec-result" id="recResult" hidden>
-          <h3>Votre prise</h3>
-          <audio id="recResultAudio" controls></audio>
-          <div class="fx-row"><label>Volume</label><input type="range" id="recVolume" min="0" max="100" value="80"></div>
-          <div class="rec-result-actions">
-            <button class="btn-secondary" id="recRetryBtn">🔄 Refaire l'enregistrement</button>
-            <button class="btn-primary" id="recSaveBtn">💾 Enregistrer la prise</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Onglet : Éditeur -->
-      <div class="studio-tab" data-tab="editor">
-        <p class="tab-hint" id="editorHint">Enregistrez d'abord une prise pour l'éditer ici.</p>
-        <canvas id="waveformCanvas" height="90"></canvas>
-        <audio id="editorAudio" controls style="width:100%; margin-top:10px;"></audio>
-        <div class="editor-toolbar">
-          <button class="editor-tool" data-tool="split">🔀 Diviser ici</button>
-          <button class="editor-tool" data-tool="delete">🗑️ Supprimer la sélection</button>
-          <button class="editor-tool" data-tool="cut">✂️ Découper</button>
-        </div>
-        <button class="btn-ai" id="cleanNoiseBtn">🔇 Nettoyer le son avec IA</button>
-        <div class="fx-row"><label>Volume piste</label><input type="range" id="editorVolume" min="0" max="100" value="100"></div>
-      </div>
-
-      <!-- Onglet : Rythmes -->
-      <div class="studio-tab" data-tab="rhythms">
-        <p class="tab-hint">Touchez un style pour l'écouter, puis ajoutez-le à votre chanson.</p>
-        <div class="chip-grid" id="rhythmGrid"></div>
-        <button class="btn-ai" id="aiSuggestRhythmBtn">✨ Laisser l'IA proposer un rythme adapté</button>
-        <p class="ai-suggestion" id="rhythmSuggestion"></p>
-      </div>
-
-      <!-- Onglet : Instruments -->
-      <div class="studio-tab" data-tab="instruments">
-        <p class="tab-hint">Touchez un instrument pour l'écouter et l'ajouter à votre composition.</p>
-        <div class="chip-grid" id="instrumentGrid"></div>
-        <div class="added-row">
-          <span>Ajoutés :</span>
-          <div class="added-list" id="addedInstruments"><span class="empty-state">aucun</span></div>
-        </div>
-      </div>
-
-      <!-- Onglet : IA -->
-      <div class="studio-tab" data-tab="ai">
-        <div class="ai-card">
-          <h3>✨ Aide-moi avec l'IA</h3>
-          <p>L'IA analyse votre projet : voix, tempo, tonalité, style, rythme, instruments et mixage.</p>
-          <button class="btn-primary" id="aiAnalyzeBtn">Analyser mon projet</button>
-          <div class="ai-result" id="aiResult" hidden></div>
-        </div>
-
-        <div class="ai-card">
-          <h3>🤖 Studio IA</h3>
-          <p id="iaIntroMsg">Donnez-moi votre idée musicale, Chorale IA s'occupe du reste.</p>
-          <div class="ia-rec-row">
-            <button class="rec-btn rec-btn--sm" id="iaRecBtn" aria-label="Enregistrer une idée"><span class="rec-dot"></span></button>
-            <span class="rec-timer" id="iaRecTimer">00:00</span>
-          </div>
-          <audio id="iaResultAudio" controls hidden style="width:100%; margin:10px 0;"></audio>
-          <button class="btn-primary" id="iaAnalyzeBtn" disabled>✨ Analyser avec IA</button>
-          <div class="ai-result" id="iaResult" hidden></div>
-        </div>
-      </div>
-
-      <!-- Onglet : Mes projets -->
-      <div class="studio-tab" data-tab="projects">
-        <div class="project-list" id="studioProjectList">
-          <p class="empty-state">Aucun projet pour le moment</p>
-        </div>
-      </div>
-
-      <button class="btn-primary" id="exportStudioBtn">Exporter le projet (1 crédit)</button>
+    <div class="section-head">
+      <h2>Mes projets</h2>
+    </div>
+    <div class="project-list" id="studioProjectList">
+      <p class="empty-state">Aucun projet pour le moment</p>
     </div>
   </section>
 
@@ -264,23 +155,10 @@
     <div class="page-title-row">
       <h1>Vidéos</h1>
     </div>
-
-    <div class="generator-card">
-      <h3>🎬 Générateur de vidéo lyric</h3>
-      <label class="field-label">Chanson</label>
-      <select id="vidSongSelect"></select>
-      <label class="field-label">Photos</label>
-      <input type="file" id="vidPhotos" accept="image/*" multiple>
-      <div class="photo-preview" id="photoPreview"></div>
-      <button class="btn-primary" id="generateVidBtn">Générer la vidéo (1 crédit)</button>
-      <p class="gen-status" id="genStatus"></p>
-    </div>
-
-    <div class="section-head">
-      <h2>Mes vidéos</h2>
-    </div>
-    <div class="video-grid" id="videoGrid">
-      <p class="empty-state">Aucune vidéo générée pour le moment</p>
+    <div class="empty-page-state">
+      <img class="empty-page-logo" src="logo-chipukizi.png" alt="Logo Chorale Chipukizi">
+      <p>Aucune vidéo pour le moment.</p>
+      <p class="empty-page-sub">De nouvelles vidéos seront publiées ici prochainement.</p>
     </div>
   </section>
 
@@ -289,17 +167,87 @@
     <div class="page-title-row">
       <h1>Réglages</h1>
     </div>
-    <div class="settings-list">
-      <button class="settings-item" data-section="compte"><span>👤</span> Compte</button>
-      <button class="settings-item" data-section="studio-set"><span>🎚️</span> Studio</button>
-      <button class="settings-item" data-section="audio-set"><span>🔊</span> Audio</button>
-      <button class="settings-item" data-section="apparence"><span>🎨</span> Apparence</button>
-      <button class="settings-item" data-section="notifications"><span>🔔</span> Notifications</button>
-      <button class="settings-item" data-section="abonnement"><span>💳</span> Abonnement</button>
-      <button class="settings-item" data-section="stockage"><span>💾</span> Stockage</button>
-      <button class="settings-item" data-section="langue"><span>🌍</span> Langue</button>
-      <button class="settings-item" data-section="aide"><span>❓</span> Aide</button>
-      <button class="settings-item" data-section="apropos"><span>ℹ️</span> À propos</button>
+
+    <div class="settings-group">
+      <p class="settings-group-title">Compte</p>
+      <div class="settings-row">
+        <span class="avatar-circle" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+        </span>
+        <div class="settings-row-info">
+          <strong id="settingsUserName">Chipukizi</strong>
+          <span>Compte gratuit</span>
+        </div>
+      </div>
+      <div class="settings-row">
+        <span>Crédits restants</span>
+        <strong id="settingsCredits">5/5</strong>
+      </div>
+      <div class="settings-row">
+        <span>Chansons aimées</span>
+        <strong id="settingsLikedCount">0</strong>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <p class="settings-group-title">Apparence</p>
+      <div class="settings-row">
+        <span>Thème</span>
+        <strong>Sombre</strong>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <p class="settings-group-title">Notifications</p>
+      <label class="settings-row settings-row--toggle">
+        <span>Nouvelles sorties</span>
+        <input type="checkbox" id="notifNewReleases" checked>
+        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+      </label>
+      <label class="settings-row settings-row--toggle">
+        <span>Progression Studio IA</span>
+        <input type="checkbox" id="notifStudio" checked>
+        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+      </label>
+    </div>
+
+    <div class="settings-group">
+      <p class="settings-group-title">Langue</p>
+      <div class="settings-row">
+        <span>Langue de l'application</span>
+        <strong>Français</strong>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <p class="settings-group-title">Stockage</p>
+      <div class="settings-row">
+        <span>Chansons disponibles hors-ligne</span>
+        <strong id="settingsSongsCount">7</strong>
+      </div>
+      <div class="settings-row">
+        <span>Projets Studio IA</span>
+        <strong id="settingsProjectsCount">0</strong>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <p class="settings-group-title">Aide et confidentialité</p>
+      <div class="settings-row">
+        <span>Contact</span>
+        <strong>Chorale Chipukizi</strong>
+      </div>
+      <div class="settings-row">
+        <span>Les fichiers audio et les descriptions envoyées au Studio IA sont transmis à MusicGPT pour générer votre chanson.</span>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <p class="settings-group-title">À propos</p>
+      <div class="settings-row">
+        <span>Chorale Chipukizi</span>
+        <strong>Version 1.0.0</strong>
+      </div>
     </div>
   </section>
 

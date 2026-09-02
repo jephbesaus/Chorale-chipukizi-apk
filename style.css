@@ -480,13 +480,29 @@ a { color: var(--gold); }
 .video-card p { font-size: 12px; padding: 8px 10px; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ===== SETTINGS ===== */
-.settings-list { display: flex; flex-direction: column; gap: 4px; }
-.settings-item {
-  display: flex; align-items: center; gap: 14px; background: var(--card); border: none; color: var(--text);
-  padding: 14px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; text-align: left;
-}
-.settings-item span { font-size: 18px; }
-.settings-item:hover { background: var(--card-hi); }
+.settings-group { background: var(--card); border-radius: var(--radius); padding: 4px 16px; margin-bottom: 16px; }
+.settings-group-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-faint); margin: 14px 0 4px; }
+.settings-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 14px; }
+.settings-row:last-child { border-bottom: none; }
+.settings-row span:first-child { color: var(--text-dim); }
+.settings-row strong { font-weight: 700; }
+.settings-row .avatar-circle { flex-shrink: 0; }
+.settings-row-info { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.settings-row-info strong { font-size: 15px; }
+.settings-row-info span { font-size: 12px; color: var(--text-dim); }
+
+.settings-row--toggle { cursor: pointer; position: relative; }
+.settings-row--toggle input[type=checkbox] { position: absolute; opacity: 0; width: 0; height: 0; }
+.toggle-track { width: 42px; height: 24px; border-radius: 999px; background: var(--card-hi); position: relative; flex-shrink: 0; transition: background .15s; }
+.toggle-thumb { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .15s; }
+.settings-row--toggle input:checked + .toggle-track { background: var(--gold); }
+.settings-row--toggle input:checked + .toggle-track .toggle-thumb { transform: translateX(18px); }
+
+/* ===== PAGE VIDE (Vidéos en attente) ===== */
+.empty-page-state { text-align: center; padding: 60px 20px; color: var(--text-dim); }
+.empty-page-logo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; margin-bottom: 18px; opacity: 0.85; }
+.empty-page-state p { margin: 4px 0; font-size: 15px; }
+.empty-page-sub { font-size: 13px; color: var(--text-faint); }
 
 /* ===== MODAL PAIEMENT ===== */
 .modal {
